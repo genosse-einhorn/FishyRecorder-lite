@@ -1,6 +1,8 @@
 #include "statusview.h"
 #include "ui_recordingstatusview.h"
 
+#include <QTimer>
+
 namespace Recording {
 
 StatusView::StatusView(QWidget *parent) :
@@ -9,6 +11,9 @@ StatusView::StatusView(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_blinkTimer = new QTimer(this);
+    m_blinkTimer->setInterval(1000);
+    QObject::connect(m_blinkTimer, &QTimer::timeout, this, &StatusView::blink);
 
     handleStatusUpdate(0, 0, false, 0);
 }
@@ -26,6 +31,8 @@ void StatusView::handleStatusUpdate(float levelL, float levelR, bool isRecording
     if (isRecording)
     {
         ui->lStatus->setText(tr("RECORDING"));
+        if (!m_blinkTimer->isActive())
+            m_blinkTimer->start();
 
         qint64 samples = sampleCount;
         qint64 seconds = (samples / 48000) % 60;
@@ -39,10 +46,17 @@ void StatusView::handleStatusUpdate(float levelL, float levelR, bool isRecording
     }
     else
     {
+        ui->lStatus->setVisible(true);
         ui->lStatus->setText(tr("STOPPED"));
+        m_blinkTimer->stop();
 
         ui->lTime->setText(QString());
     }
+}
+
+void StatusView::blink()
+{
+    ui->lStatus->setVisible(!ui->lStatus->isVisible());
 }
 
 } // namespace Recording

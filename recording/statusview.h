@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QTimer;
+
 namespace Recording {
 
 namespace Ui {
@@ -20,8 +22,12 @@ public:
 public slots:
     void handleStatusUpdate(float levelL, float levelR, bool isRecording, qint64 sampleCount);
 
+private slots:
+    void blink();
+
 private:
     Ui::RecordingStatusView *ui;
+    QTimer *m_blinkTimer;
 };
 
 } // namespace Recording
