@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "recordingcoordinator.h"
+#include "recording/coordinator.h"
 
 #include <portaudio.h>
 #include <QStandardPaths>

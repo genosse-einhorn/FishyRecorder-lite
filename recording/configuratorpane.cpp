@@ -1,4 +1,4 @@
-#include "recordingconfiguratorpane.h"
+#include "configuratorpane.h"
 #include "ui_recordingconfiguratorpane.h"
 
 #include <QSettings>
@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <portaudio.h>
 
-#include "recordingcoordinator.h"
+#include "coordinator.h"
 
 namespace Recording {
 

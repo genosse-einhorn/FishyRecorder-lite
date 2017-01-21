@@ -1,4 +1,4 @@
-#include "recordingfancyprogressbar.h"
+#include "fancyprogressbar.h"
 
 #include <QPainter>
 #include <cmath>

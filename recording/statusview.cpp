@@ -1,4 +1,4 @@
-#include "recordingstatusview.h"
+#include "statusview.h"
 #include "ui_recordingstatusview.h"
 
 namespace Recording {

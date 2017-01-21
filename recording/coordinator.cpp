@@ -1,6 +1,6 @@
-#include "recordingcoordinator.h"
+#include "coordinator.h"
 
-#include "recordinglevelcalculator.h"
+#include "levelcalculator.h"
 #include "lameencoderstream.h"
 
 #include <QTimer>

@@ -1,4 +1,4 @@
-#include "recordinglevelcalculator.h"
+#include "levelcalculator.h"
 
 namespace Recording {
 

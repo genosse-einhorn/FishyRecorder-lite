@@ -95,19 +95,19 @@
   <customwidget>
    <class>Recording::ErrorWidget</class>
    <extends>QWidget</extends>
-   <header>recordingerrorwidget.h</header>
+   <header>recording/errorwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Recording::StatusView</class>
    <extends>QWidget</extends>
-   <header>recordingstatusview.h</header>
+   <header>recording/statusview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Recording::ConfiguratorPane</class>
    <extends>QWidget</extends>
-   <header>recordingconfiguratorpane.h</header>
+   <header>recording/configuratorpane.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

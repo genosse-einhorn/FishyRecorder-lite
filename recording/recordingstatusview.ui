@@ -92,7 +92,7 @@
   <customwidget>
    <class>Recording::FancyProgressBar</class>
    <extends>QWidget</extends>
-   <header>recordingfancyprogressbar.h</header>
+   <header>recording/fancyprogressbar.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

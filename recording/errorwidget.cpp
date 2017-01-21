@@ -1,4 +1,4 @@
-#include "recordingerrorwidget.h"
+#include "errorwidget.h"
 
 #include <QLabel>
 #include <QTimer>
