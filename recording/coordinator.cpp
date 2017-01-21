@@ -127,6 +127,13 @@ void Coordinator::startRecording()
     if (isRecording())
         stopRecording();
 
+    if (!m_audioStream || m_recordingDev == paNoDevice)
+    {
+        error(tr("You can't start recoding until your audio input works"));
+        stopRecording();
+        return;
+    }
+
     QString filename = QString(tr("Recording from %2.mp3"))
             .arg(QDateTime::currentDateTime().toString(tr("yyyy-MM-dd hhmm t")));
 
@@ -135,6 +142,7 @@ void Coordinator::startRecording()
     {
         error(tr("MP3: Could not open file %1: %2").arg(filename, m_mp3FileStream->errorString()));
         stopRecording();
+        return;
     }
 
     QString track = tr("Recording from %1").arg(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
@@ -165,6 +173,14 @@ void Coordinator::stopRecording()
     }
 
     m_samplesSaved = 0;
+}
+
+void Coordinator::setRecording(bool record)
+{
+    if (record)
+        startRecording();
+    else
+        stopRecording();
 }
 
 void Coordinator::setVolumeFactor(float factor)

@@ -19,9 +19,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
-    void recordToggle(bool record);
-
 private:
     Ui::MainWindow *ui;
 

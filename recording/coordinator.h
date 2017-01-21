@@ -63,6 +63,7 @@ public slots:
 
     void startRecording();
     void stopRecording();
+    void setRecording(bool record);
 
     void setVolumeFactor(float factor);
 

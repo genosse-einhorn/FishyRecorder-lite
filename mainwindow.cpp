@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_recorder, &Recording::Coordinator::error, ui->errorWidget, &Recording::ErrorWidget::displayError);
 
     QObject::connect(ui->bEnableMonitor, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setMonitorEnabled);
-    QObject::connect(ui->bEnableRecord, &QAbstractButton::toggled, this, &MainWindow::recordToggle);
+    QObject::connect(ui->bEnableRecord, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setRecording);
 
     ui->configPane->hookupCoordinator(m_recorder);
 }
@@ -27,16 +27,4 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::recordToggle(bool record)
-{
-    if (record)
-    {
-        m_recorder->startRecording();
-    }
-    else
-    {
-        m_recorder->stopRecording();
-    }
 }
