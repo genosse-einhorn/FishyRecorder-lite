@@ -8,7 +8,9 @@
 #include <QPropertyAnimation>
 #include <QDebug>
 
-RecordingErrorWidget::RecordingErrorWidget(QWidget *parent) :
+namespace Recording {
+
+ErrorWidget::ErrorWidget(QWidget *parent) :
     QWidget(parent),
     temporary_error_timer(new QTimer(this)),
     max_height_anim(new QPropertyAnimation(this, "maximumHeight", this)),
@@ -31,15 +33,15 @@ RecordingErrorWidget::RecordingErrorWidget(QWidget *parent) :
 
     this->setMaximumHeight(0);
 
-    QObject::connect(temporary_error_timer, &QTimer::timeout, this, &RecordingErrorWidget::clearError);
+    QObject::connect(temporary_error_timer, &QTimer::timeout, this, &ErrorWidget::clearError);
 }
 
-void RecordingErrorWidget::displayError(const QString &message)
+void ErrorWidget::displayError(const QString &message)
 {
     displayMessage("#cc0000", tr("Error"), message);
 }
 
-void RecordingErrorWidget::displayTemporaryWarning(const QString &message)
+void ErrorWidget::displayTemporaryWarning(const QString &message)
 {
     if (!message.size())
     {
@@ -55,18 +57,18 @@ void RecordingErrorWidget::displayTemporaryWarning(const QString &message)
     }
 }
 
-void RecordingErrorWidget::displayWarning(const QString &message)
+void ErrorWidget::displayWarning(const QString &message)
 {
     displayMessage("#f57900", tr("Warning"), message);
 }
 
-void RecordingErrorWidget::displayNotice(const QString &message)
+void ErrorWidget::displayNotice(const QString &message)
 {
     displayMessage("#4a90d9", tr("Notice"), message);
 }
 
 void
-RecordingErrorWidget::displayMessage(const QString &bgcolor, const QString &title, const QString &message)
+ErrorWidget::displayMessage(const QString &bgcolor, const QString &title, const QString &message)
 {
     if (message.size())
     {
@@ -91,7 +93,7 @@ RecordingErrorWidget::displayMessage(const QString &bgcolor, const QString &titl
 }
 
 void
-RecordingErrorWidget::clearError()
+ErrorWidget::clearError()
 {
     temporary_error_timer->stop();
     max_height_anim->stop();
@@ -101,7 +103,7 @@ RecordingErrorWidget::clearError()
     max_height_anim->start();
 }
 
-void RecordingErrorWidget::paintEvent(QPaintEvent *event)
+void ErrorWidget::paintEvent(QPaintEvent *event)
 {
     QStyleOption opt;
     opt.init(this);
@@ -110,3 +112,5 @@ void RecordingErrorWidget::paintEvent(QPaintEvent *event)
 
     QWidget::paintEvent(event);
 }
+
+} // namespace Recording

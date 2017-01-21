@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RecordingStatusView</class>
+ <class>Recording::RecordingStatusView</class>
  <widget class="QWidget" name="RecordingStatusView">
   <property name="geometry">
    <rect>
@@ -67,7 +67,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="RecordingFancyProgressBar" name="meterL" native="true">
+    <widget class="Recording::FancyProgressBar" name="meterL" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -77,7 +77,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="RecordingFancyProgressBar" name="meterR" native="true">
+    <widget class="Recording::FancyProgressBar" name="meterR" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -90,7 +90,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>RecordingFancyProgressBar</class>
+   <class>Recording::FancyProgressBar</class>
    <extends>QWidget</extends>
    <header>recordingfancyprogressbar.h</header>
    <container>1</container>

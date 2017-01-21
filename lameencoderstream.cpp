@@ -5,8 +5,7 @@
 #include <QDebug>
 #include <memory>
 
-// TODO: Create open() method
-// TODO: get error handling in check
+namespace Recording {
 
 LameEncoderStream::LameEncoderStream(QObject *parent)
 : QObject(parent), m_lame_gbf(lame_init()), m_device(nullptr)
@@ -108,3 +107,5 @@ qint64 LameEncoderStream::writeAudio(float *buffer, qint64 numSamples)
         return bytesWritten;
     }
 }
+
+} // namespace Recording

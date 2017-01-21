@@ -14,11 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_recorder = new RecordingCoordinator(this);
-    QObject::connect(m_recorder, &RecordingCoordinator::statusUpdate, ui->statusView, &RecordingStatusView::handleStatusUpdate);
-    QObject::connect(m_recorder, &RecordingCoordinator::error, ui->errorWidget, &RecordingErrorWidget::displayError);
+    m_recorder = new Recording::Coordinator(this);
+    QObject::connect(m_recorder, &Recording::Coordinator::statusUpdate, ui->statusView, &Recording::StatusView::handleStatusUpdate);
+    QObject::connect(m_recorder, &Recording::Coordinator::error, ui->errorWidget, &Recording::ErrorWidget::displayError);
 
-    QObject::connect(ui->bEnableMonitor, &QAbstractButton::toggled, m_recorder, &RecordingCoordinator::setMonitorEnabled);
+    QObject::connect(ui->bEnableMonitor, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setMonitorEnabled);
     QObject::connect(ui->bEnableRecord, &QAbstractButton::toggled, this, &MainWindow::recordToggle);
 
     ui->configPane->hookupCoordinator(m_recorder);

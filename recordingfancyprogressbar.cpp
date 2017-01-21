@@ -3,12 +3,14 @@
 #include <QPainter>
 #include <cmath>
 
-RecordingFancyProgressBar::RecordingFancyProgressBar(QWidget *parent) :
+namespace Recording {
+
+FancyProgressBar::FancyProgressBar(QWidget *parent) :
     QWidget(parent)
 {
 }
 
-void RecordingFancyProgressBar::setValue(float value)
+void FancyProgressBar::setValue(float value)
 {
     m_value = value;
 
@@ -16,17 +18,17 @@ void RecordingFancyProgressBar::setValue(float value)
 }
 
 
-QSize RecordingFancyProgressBar::sizeHint() const
+QSize FancyProgressBar::sizeHint() const
 {
     return QSize(50, fontMetrics().height() + 2);
 }
 
-QSize RecordingFancyProgressBar::minimumSizeHint() const
+QSize FancyProgressBar::minimumSizeHint() const
 {
     return QSize(10, fontMetrics().height() + 2);
 }
 
-void RecordingFancyProgressBar::paintEvent(QPaintEvent *)
+void FancyProgressBar::paintEvent(QPaintEvent *)
 {
     int boxWidth = (int)(width() * std::pow(m_value, 1.0f/3.0f));
 
@@ -39,3 +41,5 @@ void RecordingFancyProgressBar::paintEvent(QPaintEvent *)
         painter.fillRect(0, 0, boxWidth, height(), palette().brush(palette().currentColorGroup(), QPalette::Foreground));
     }
 }
+
+} // namespace Recording

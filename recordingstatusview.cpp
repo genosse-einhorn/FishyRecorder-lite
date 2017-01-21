@@ -1,7 +1,9 @@
 #include "recordingstatusview.h"
 #include "ui_recordingstatusview.h"
 
-RecordingStatusView::RecordingStatusView(QWidget *parent) :
+namespace Recording {
+
+StatusView::StatusView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RecordingStatusView)
 {
@@ -11,12 +13,12 @@ RecordingStatusView::RecordingStatusView(QWidget *parent) :
     handleStatusUpdate(0, 0, false, 0);
 }
 
-RecordingStatusView::~RecordingStatusView()
+StatusView::~StatusView()
 {
     delete ui;
 }
 
-void RecordingStatusView::handleStatusUpdate(float levelL, float levelR, bool isRecording, qint64 sampleCount)
+void StatusView::handleStatusUpdate(float levelL, float levelR, bool isRecording, qint64 sampleCount)
 {
     ui->meterL->setValue(levelL);
     ui->meterR->setValue(levelR);
@@ -42,3 +44,5 @@ void RecordingStatusView::handleStatusUpdate(float levelL, float levelR, bool is
         ui->lTime->setText(QString());
     }
 }
+
+} // namespace Recording

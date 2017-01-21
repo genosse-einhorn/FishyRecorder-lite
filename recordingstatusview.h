@@ -3,17 +3,19 @@
 
 #include <QWidget>
 
+namespace Recording {
+
 namespace Ui {
 class RecordingStatusView;
 }
 
-class RecordingStatusView : public QWidget
+class StatusView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit RecordingStatusView(QWidget *parent = 0);
-    ~RecordingStatusView();
+    explicit StatusView(QWidget *parent = 0);
+    ~StatusView();
 
 public slots:
     void handleStatusUpdate(float levelL, float levelR, bool isRecording, qint64 sampleCount);
@@ -21,5 +23,7 @@ public slots:
 private:
     Ui::RecordingStatusView *ui;
 };
+
+} // namespace Recording
 
 #endif // RECORDINGSTATUSVIEW_H

@@ -16,13 +16,13 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="RecordingStatusView" name="statusView" native="true"/>
+     <widget class="Recording::StatusView" name="statusView" native="true"/>
     </item>
     <item>
-     <widget class="RecordingErrorWidget" name="errorWidget" native="true"/>
+     <widget class="Recording::ErrorWidget" name="errorWidget" native="true"/>
     </item>
     <item>
-     <widget class="RecordingConfiguratorPane" name="configPane" native="true"/>
+     <widget class="Recording::ConfiguratorPane" name="configPane" native="true"/>
     </item>
     <item>
      <spacer name="verticalSpacer">
@@ -93,19 +93,19 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>RecordingErrorWidget</class>
+   <class>Recording::ErrorWidget</class>
    <extends>QWidget</extends>
    <header>recordingerrorwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>RecordingStatusView</class>
+   <class>Recording::StatusView</class>
    <extends>QWidget</extends>
    <header>recordingstatusview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>RecordingConfiguratorPane</class>
+   <class>Recording::ConfiguratorPane</class>
    <extends>QWidget</extends>
    <header>recordingconfiguratorpane.h</header>
    <container>1</container>

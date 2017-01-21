@@ -8,7 +8,9 @@
 
 #include "recordingcoordinator.h"
 
-RecordingConfiguratorPane::RecordingConfiguratorPane(QWidget *parent) :
+namespace Recording {
+
+ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RecordingConfiguratorPane)
 {
@@ -24,12 +26,12 @@ RecordingConfiguratorPane::RecordingConfiguratorPane(QWidget *parent) :
     {
         const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
 
-        if (RecordingCoordinator::isSupportedInput(i, info))
+        if (Coordinator::isSupportedInput(i, info))
         {
             ui->cbRecordDev->addItem(QString::fromLocal8Bit(info->name), QVariant::fromValue(i));
         }
 
-        if (RecordingCoordinator::isSupportedOutput(i, info))
+        if (Coordinator::isSupportedOutput(i, info))
         {
             ui->cbMonitorDev->addItem(QString::fromLocal8Bit(info->name), QVariant::fromValue(i));
         }
@@ -71,27 +73,27 @@ RecordingConfiguratorPane::RecordingConfiguratorPane(QWidget *parent) :
 
 
 
-    QObject::connect(ui->cbMonitorDev, &QComboBox::currentTextChanged, this, &RecordingConfiguratorPane::cbMonitorDevChanged);
-    QObject::connect(ui->cbRecordDev, &QComboBox::currentTextChanged, this, &RecordingConfiguratorPane::cbRecordDevChanged);
-    QObject::connect(ui->slVolume, &QSlider::valueChanged, this, &RecordingConfiguratorPane::slVolumeChanged);
-    QObject::connect(ui->bPicker, &QAbstractButton::clicked, this, &RecordingConfiguratorPane::outputDirButtonClick);
-    QObject::connect(ui->eMp3Artist, &QLineEdit::textChanged, this, &RecordingConfiguratorPane::eMp3ArtistTextChanged);
+    QObject::connect(ui->cbMonitorDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbMonitorDevChanged);
+    QObject::connect(ui->cbRecordDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbRecordDevChanged);
+    QObject::connect(ui->slVolume, &QSlider::valueChanged, this, &ConfiguratorPane::slVolumeChanged);
+    QObject::connect(ui->bPicker, &QAbstractButton::clicked, this, &ConfiguratorPane::outputDirButtonClick);
+    QObject::connect(ui->eMp3Artist, &QLineEdit::textChanged, this, &ConfiguratorPane::eMp3ArtistTextChanged);
 }
 
-RecordingConfiguratorPane::~RecordingConfiguratorPane()
+ConfiguratorPane::~ConfiguratorPane()
 {
     delete ui;
 
     Pa_Terminate();
 }
 
-void RecordingConfiguratorPane::hookupCoordinator(RecordingCoordinator *c)
+void ConfiguratorPane::hookupCoordinator(Coordinator *c)
 {
-    QObject::connect(this, &RecordingConfiguratorPane::monitorDevChanged, c, &RecordingCoordinator::setMonitorDevice);
-    QObject::connect(this, &RecordingConfiguratorPane::recordingDevChanged, c, &RecordingCoordinator::setRecordingDevice);
-    QObject::connect(this, &RecordingConfiguratorPane::volumeChanged, c, &RecordingCoordinator::setVolumeFactor);
-    QObject::connect(this, &RecordingConfiguratorPane::outputDirChanged, c, &RecordingCoordinator::setSaveDir);
-    QObject::connect(this, &RecordingConfiguratorPane::mp3ArtistChanged, c, &RecordingCoordinator::setMp3ArtistName);
+    QObject::connect(this, &ConfiguratorPane::monitorDevChanged, c, &Coordinator::setMonitorDevice);
+    QObject::connect(this, &ConfiguratorPane::recordingDevChanged, c, &Coordinator::setRecordingDevice);
+    QObject::connect(this, &ConfiguratorPane::volumeChanged, c, &Coordinator::setVolumeFactor);
+    QObject::connect(this, &ConfiguratorPane::outputDirChanged, c, &Coordinator::setSaveDir);
+    QObject::connect(this, &ConfiguratorPane::mp3ArtistChanged, c, &Coordinator::setMp3ArtistName);
 
     // initial sync
     cbRecordDevChanged();
@@ -101,26 +103,26 @@ void RecordingConfiguratorPane::hookupCoordinator(RecordingCoordinator *c)
     emit outputDirChanged(ui->eDirectory->text());
 }
 
-void RecordingConfiguratorPane::cbRecordDevChanged()
+void ConfiguratorPane::cbRecordDevChanged()
 {
     QSettings().setValue("Recording Device", QVariant::fromValue(ui->cbRecordDev->currentText()));
     emit recordingDevChanged(ui->cbRecordDev->currentData().value<PaDeviceIndex>());
 }
 
-void RecordingConfiguratorPane::cbMonitorDevChanged()
+void ConfiguratorPane::cbMonitorDevChanged()
 {
     QSettings().setValue("Monitor Device", QVariant::fromValue(ui->cbMonitorDev->currentText()));
     emit monitorDevChanged(ui->cbMonitorDev->currentData().value<PaDeviceIndex>());
 }
 
-void RecordingConfiguratorPane::slVolumeChanged()
+void ConfiguratorPane::slVolumeChanged()
 {
     QSettings().setValue("Volume", QVariant::fromValue(ui->slVolume->value()));
     double val = double(ui->slVolume->value()) / 100000000.0;
     emit volumeChanged(val);
 }
 
-void RecordingConfiguratorPane::outputDirButtonClick()
+void ConfiguratorPane::outputDirButtonClick()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"), ui->eDirectory->text());
     if (dir.length())
@@ -133,8 +135,10 @@ void RecordingConfiguratorPane::outputDirButtonClick()
     }
 }
 
-void RecordingConfiguratorPane::eMp3ArtistTextChanged()
+void ConfiguratorPane::eMp3ArtistTextChanged()
 {
     QSettings().setValue("MP3 Artist", QVariant::fromValue(ui->eMp3Artist->text()));
     emit mp3ArtistChanged(ui->eMp3Artist->text());
 }
+
+} // namespace Recording

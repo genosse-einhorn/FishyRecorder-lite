@@ -1,11 +1,13 @@
 #include "recordinglevelcalculator.h"
 
-RecordingLevelCalculator::RecordingLevelCalculator(QObject *parent) : QObject(parent)
+namespace Recording {
+
+LevelCalculator::LevelCalculator(QObject *parent) : QObject(parent)
 {
 
 }
 
-void RecordingLevelCalculator::processAudio(const float *samples, qint64 count)
+void LevelCalculator::processAudio(const float *samples, qint64 count)
 {
     for (qint64 i = 0; i < count; ++i) {
         m_tempLevelL = qMax(m_tempLevelL, qAbs(samples[2*i + 0]));
@@ -25,7 +27,7 @@ void RecordingLevelCalculator::processAudio(const float *samples, qint64 count)
     }
 }
 
-void RecordingLevelCalculator::processAudio(const qint16 *sampleI, qint64 count)
+void LevelCalculator::processAudio(const qint16 *sampleI, qint64 count)
 {
     float sampleF[count*2];
 
@@ -35,3 +37,5 @@ void RecordingLevelCalculator::processAudio(const qint16 *sampleI, qint64 count)
 
     processAudio(sampleF, count);
 }
+
+} // namespace Recording

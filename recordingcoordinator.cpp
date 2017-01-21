@@ -49,13 +49,15 @@ namespace
     }
 }
 
-RecordingCoordinator::RecordingCoordinator(QObject *parent) : QObject(parent)
+namespace Recording {
+
+Coordinator::Coordinator(QObject *parent) : QObject(parent)
 {
     Pa_Initialize();
 
-    m_levelCalculator = new RecordingLevelCalculator(this);
+    m_levelCalculator = new LevelCalculator(this);
 
-    QObject::connect(m_levelCalculator, &RecordingLevelCalculator::levelUpdate, this, &RecordingCoordinator::handleLevelUpdate);
+    QObject::connect(m_levelCalculator, &LevelCalculator::levelUpdate, this, &Coordinator::handleLevelUpdate);
 
     int BUFFER_SIZE = qNextPowerOfTwo(SAMPLE_RATE * 5);
     m_ringbufferData = std::make_unique<float[]>(SAMPLE_SIZE * BUFFER_SIZE / sizeof(float));
@@ -63,30 +65,30 @@ RecordingCoordinator::RecordingCoordinator(QObject *parent) : QObject(parent)
 
     QTimer *t = new QTimer(this);
     t->setInterval(40);
-    QObject::connect(t, &QTimer::timeout, this, &RecordingCoordinator::processAudio);
+    QObject::connect(t, &QTimer::timeout, this, &Coordinator::processAudio);
     t->start();
 }
 
-RecordingCoordinator::~RecordingCoordinator()
+Coordinator::~Coordinator()
 {
     stopAudio();
 
     Pa_Terminate();
 }
 
-bool RecordingCoordinator::isSupportedInput(PaDeviceIndex index, const PaDeviceInfo *info)
+bool Coordinator::isSupportedInput(PaDeviceIndex index, const PaDeviceInfo *info)
 {
     auto p = ourInputParams(index, info);
     return paNoError == Pa_IsFormatSupported(&p, nullptr, SAMPLE_RATE);
 }
 
-bool RecordingCoordinator::isSupportedOutput(PaDeviceIndex index, const PaDeviceInfo *info)
+bool Coordinator::isSupportedOutput(PaDeviceIndex index, const PaDeviceInfo *info)
 {
     auto p = ourOutputParams(index, info);
     return paNoError == Pa_IsFormatSupported(nullptr, &p, SAMPLE_RATE);
 }
 
-void RecordingCoordinator::setRecordingDevice(const PaDeviceIndex &device)
+void Coordinator::setRecordingDevice(const PaDeviceIndex &device)
 {
     if (device != m_recordingDev)
     {
@@ -99,7 +101,7 @@ void RecordingCoordinator::setRecordingDevice(const PaDeviceIndex &device)
     }
 }
 
-void RecordingCoordinator::setMonitorDevice(const PaDeviceIndex &device)
+void Coordinator::setMonitorDevice(const PaDeviceIndex &device)
 {
     if (device != m_monitorDev)
     {
@@ -112,7 +114,7 @@ void RecordingCoordinator::setMonitorDevice(const PaDeviceIndex &device)
     }
 }
 
-void RecordingCoordinator::setMonitorEnabled(bool enabled)
+void Coordinator::setMonitorEnabled(bool enabled)
 {
     if (m_monitorEnabled.exchange(enabled) != enabled)
     {
@@ -120,7 +122,7 @@ void RecordingCoordinator::setMonitorEnabled(bool enabled)
     }
 }
 
-void RecordingCoordinator::startRecording()
+void Coordinator::startRecording()
 {
     if (isRecording())
         stopRecording();
@@ -138,7 +140,7 @@ void RecordingCoordinator::startRecording()
     QString track = tr("Recording from %1").arg(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
 
     m_mp3Stream = new LameEncoderStream(this);
-    QObject::connect(m_mp3Stream, &LameEncoderStream::error, this, &RecordingCoordinator::error);
+    QObject::connect(m_mp3Stream, &LameEncoderStream::error, this, &Coordinator::error);
 
     if (!m_mp3Stream->init(m_mp3ArtistName, track, 192, m_mp3FileStream))
     {
@@ -146,7 +148,7 @@ void RecordingCoordinator::startRecording()
     }
 }
 
-void RecordingCoordinator::stopRecording()
+void Coordinator::stopRecording()
 {
     if (m_mp3Stream)
     {
@@ -165,18 +167,18 @@ void RecordingCoordinator::stopRecording()
     m_samplesSaved = 0;
 }
 
-void RecordingCoordinator::setVolumeFactor(float factor)
+void Coordinator::setVolumeFactor(float factor)
 {
     m_volumeFactor.store(factor);
     emit volumeFactorChanged(m_volumeFactor);
 }
 
-void RecordingCoordinator::handleLevelUpdate(float levelL, float levelR)
+void Coordinator::handleLevelUpdate(float levelL, float levelR)
 {
     emit statusUpdate(levelL, levelR, isRecording(), samplesRecorded());
 }
 
-void RecordingCoordinator::setSaveDir(const QString &dir)
+void Coordinator::setSaveDir(const QString &dir)
 {
     if (m_saveDir != dir)
     {
@@ -185,7 +187,7 @@ void RecordingCoordinator::setSaveDir(const QString &dir)
     }
 }
 
-void RecordingCoordinator::setMp3ArtistName(const QString &name)
+void Coordinator::setMp3ArtistName(const QString &name)
 {
     if (m_mp3ArtistName != name)
     {
@@ -194,12 +196,12 @@ void RecordingCoordinator::setMp3ArtistName(const QString &name)
     }
 }
 
-int RecordingCoordinator::audioCallback(const void *inputBuffer, void *outputBuffer,
+int Coordinator::audioCallback(const void *inputBuffer, void *outputBuffer,
                                         unsigned long framesPerBuffer,
                                         const PaStreamCallbackTimeInfo */*timeInfo*/,
                                         PaStreamCallbackFlags /*statusFlags*/, void *userData)
 {
-    RecordingCoordinator *self = static_cast<RecordingCoordinator*>(userData);
+    Coordinator *self = static_cast<Coordinator*>(userData);
 
     if (outputBuffer)
     {
@@ -228,7 +230,7 @@ int RecordingCoordinator::audioCallback(const void *inputBuffer, void *outputBuf
     return paContinue;
 }
 
-void RecordingCoordinator::stopAudio()
+void Coordinator::stopAudio()
 {
     if (!m_audioStream)
         return;
@@ -238,7 +240,7 @@ void RecordingCoordinator::stopAudio()
     m_audioStream = nullptr;
 }
 
-void RecordingCoordinator::startAudio()
+void Coordinator::startAudio()
 {
     if (m_audioStream)
         stopAudio();
@@ -253,7 +255,7 @@ void RecordingCoordinator::startAudio()
                                 m_recordingDev != paNoDevice ? &inp : nullptr,
                                 m_monitorDev != paNoDevice ? &outp : nullptr,
                                 SAMPLE_RATE, paFramesPerBufferUnspecified, paNoFlag,
-                                &RecordingCoordinator::audioCallback, this);
+                                &Coordinator::audioCallback, this);
     if (err != paNoError)
     {
         emit error(Pa_GetErrorText(err));
@@ -271,7 +273,7 @@ void RecordingCoordinator::startAudio()
     }
 }
 
-void RecordingCoordinator::processAudio()
+void Coordinator::processAudio()
 {
     float buffer[2048];
     qint64 nsamples = 0;
@@ -288,3 +290,5 @@ void RecordingCoordinator::processAudio()
         }
     }
 }
+
+} // namespace Recording

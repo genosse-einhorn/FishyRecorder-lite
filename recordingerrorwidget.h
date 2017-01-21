@@ -6,11 +6,13 @@
 class QPropertyAnimation;
 class QLabel;
 
-class RecordingErrorWidget : public QWidget
+namespace Recording {
+
+class ErrorWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RecordingErrorWidget(QWidget *parent = 0);
+    explicit ErrorWidget(QWidget *parent = 0);
 
 signals:
 
@@ -36,5 +38,7 @@ private:
 protected:
     void paintEvent(QPaintEvent *);
 };
+
+} // namespace Recording
 
 #endif // ERRORWIDGET_H

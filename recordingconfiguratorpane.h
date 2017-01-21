@@ -6,23 +6,25 @@
 #include <portaudio.h>
 
 class QSettings;
-class RecordingCoordinator;
 
+namespace Recording {
+
+class Coordinator;
 
 namespace Ui {
 class RecordingConfiguratorPane;
 }
 
-class RecordingConfiguratorPane : public QWidget
+class ConfiguratorPane : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit RecordingConfiguratorPane(QWidget *parent = 0);
-    ~RecordingConfiguratorPane();
+    explicit ConfiguratorPane(QWidget *parent = 0);
+    ~ConfiguratorPane();
 
     // Hooks up signals and slots and syncs the current state into the coordinator
-    void hookupCoordinator(RecordingCoordinator *c);
+    void hookupCoordinator(Coordinator *c);
 
 signals:
     void recordingDevChanged(PaDeviceIndex i);
@@ -41,5 +43,7 @@ private slots:
 private:
     Ui::RecordingConfiguratorPane *ui;
 };
+
+} // namespace Recording
 
 #endif // RECORDINGCONFIGURATORPANE_H

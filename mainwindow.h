@@ -7,7 +7,9 @@ namespace Ui {
 class MainWindow;
 }
 
-class RecordingCoordinator;
+namespace Recording {
+class Coordinator;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -23,7 +25,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    RecordingCoordinator *m_recorder;
+    Recording::Coordinator *m_recorder;
 };
 
 #endif // MAINWINDOW_H

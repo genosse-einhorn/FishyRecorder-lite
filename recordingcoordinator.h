@@ -14,15 +14,17 @@ class QIODevice;
 class QTimer;
 class QFile;
 
-class RecordingLevelCalculator;
-class LameEncoderStream;
+namespace Recording {
 
-class RecordingCoordinator : public QObject
+class LameEncoderStream;
+class LevelCalculator;
+
+class Coordinator : public QObject
 {
     Q_OBJECT
 public:
-    explicit RecordingCoordinator(QObject *parent = 0);
-    ~RecordingCoordinator();
+    explicit Coordinator(QObject *parent = 0);
+    ~Coordinator();
 
     PaDeviceIndex recordingDevice() const { return m_recordingDev; }
     PaDeviceIndex monitorDevice() const { return m_monitorDev; }
@@ -82,10 +84,10 @@ private:
     void processAudio();
 
 private:
-    RecordingLevelCalculator *m_levelCalculator;
+    Recording::LevelCalculator *m_levelCalculator;
 
     QIODevice *m_mp3FileStream { nullptr };
-    LameEncoderStream *m_mp3Stream { nullptr };
+    Recording::LameEncoderStream *m_mp3Stream { nullptr };
 
     PaDeviceIndex m_recordingDev { paNoDevice };
     PaDeviceIndex m_monitorDev { paNoDevice };
@@ -105,5 +107,7 @@ private:
     std::unique_ptr<float[]> m_ringbufferData;
     PaUtilRingBuffer m_ringbuffer {};
 };
+
+} // namespace Recording
 
 #endif // RECORDINGCOORDINATOR_H

@@ -3,11 +3,13 @@
 
 #include <QProgressBar>
 
-class RecordingFancyProgressBar : public QWidget
+namespace Recording {
+
+class FancyProgressBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RecordingFancyProgressBar(QWidget *parent = 0);
+    explicit FancyProgressBar(QWidget *parent = 0);
 
 signals:
 
@@ -26,5 +28,7 @@ protected:
 private:
     float m_value = 0.0f;
 };
+
+} // namespace Recording
 
 #endif // FANCYPROGRESSBAR_H

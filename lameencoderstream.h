@@ -7,6 +7,8 @@
 
 class QIODevice;
 
+namespace Recording {
+
 class LameEncoderStream: public QObject
 {
     Q_OBJECT
@@ -28,5 +30,7 @@ private:
     lame_global_flags *m_lame_gbf;
     QIODevice         *m_device;
 };
+
+} // namespace Recording
 
 #endif // LAMEENCODERSTREAM_H

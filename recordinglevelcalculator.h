@@ -3,11 +3,13 @@
 
 #include <QObject>
 
-class RecordingLevelCalculator : public QObject
+namespace Recording {
+
+class LevelCalculator : public QObject
 {
     Q_OBJECT
 public:
-    explicit RecordingLevelCalculator(QObject *parent = 0);
+    explicit LevelCalculator(QObject *parent = 0);
 
 signals:
     void levelUpdate(float l, float r);
@@ -23,5 +25,7 @@ private:
     float m_levelR = 0.0f;
     qint64 m_tempLevelSampleCount = 0;
 };
+
+} // namespace Recording
 
 #endif // LEVELCALCULATOR_H
