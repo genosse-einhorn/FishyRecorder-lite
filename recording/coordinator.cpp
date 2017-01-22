@@ -153,7 +153,10 @@ void Coordinator::startRecording()
     if (!m_mp3Stream->init(m_mp3ArtistName, track, 192, m_mp3FileStream))
     {
         stopRecording();
+        return;
     }
+
+    emit recordingChanged(isRecording());
 }
 
 void Coordinator::stopRecording()
@@ -173,6 +176,7 @@ void Coordinator::stopRecording()
     }
 
     m_samplesSaved = 0;
+    emit recordingChanged(isRecording());
 }
 
 void Coordinator::setRecording(bool record)

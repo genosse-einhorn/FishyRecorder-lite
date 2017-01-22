@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->bEnableMonitor, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setMonitorEnabled);
     QObject::connect(ui->bEnableRecord, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setRecording);
+    QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, ui->bEnableRecord, &QAbstractButton::setChecked);
+    QObject::connect(m_recorder, &Recording::Coordinator::monitorEnabledChanged, ui->bEnableMonitor, &QAbstractButton::setChecked);
 
     ui->configPane->hookupCoordinator(m_recorder);
 }

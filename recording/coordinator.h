@@ -55,6 +55,7 @@ signals:
     void mp3ArtistNameChanged(const QString &name);
 
     void statusUpdate(float levelL, float levelR, bool isRecording, qint64 recordedSamples);
+    void recordingChanged(bool isRecording);
 
 public slots:
     void setRecordingDevice(const PaDeviceIndex &device);
