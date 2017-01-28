@@ -4,7 +4,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QFileDialog>
-#include <portaudio.h>
+
+#include <soundio.h>
 
 #include "coordinator.h"
 
@@ -14,47 +15,62 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RecordingConfiguratorPane)
 {
-    Pa_Initialize();
-
     ui->setupUi(this);
+
+    SoundIo *soundio = soundio_create();
+    soundio_connect(soundio);
+    soundio_flush_events(soundio);
 
     QSettings settings;
 
-    ui->cbRecordDev->addItem(tr("<No Device>"), QVariant::fromValue(paNoDevice));
-    ui->cbMonitorDev->addItem(tr("<No Device>"), QVariant::fromValue(paNoDevice));
-    for (PaDeviceIndex i = 0; i < Pa_GetDeviceCount(); ++i)
+    ui->cbRecordDev->addItem(tr("<No Device>"), QVariant::fromValue(QString()));
+    ui->cbMonitorDev->addItem(tr("<No Device>"), QVariant::fromValue(QString()));
+
+    int input_count = soundio_input_device_count(soundio);
+    int output_count = soundio_output_device_count(soundio);
+
+    for (int i = 0; i < input_count; ++i)
     {
-        const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+        SoundIoDevice *device = soundio_get_input_device(soundio, i);
 
-        if (Coordinator::isSupportedInput(i, info))
+        if (Coordinator::isSupportedInput(device))
         {
-            ui->cbRecordDev->addItem(QString::fromLocal8Bit(info->name), QVariant::fromValue(i));
+            ui->cbRecordDev->addItem(QString::fromUtf8(device->name), QString::fromUtf8(device->id));
         }
 
-        if (Coordinator::isSupportedOutput(i, info))
-        {
-            ui->cbMonitorDev->addItem(QString::fromLocal8Bit(info->name), QVariant::fromValue(i));
-        }
+        soundio_device_unref(device);
     }
 
-    auto i = ui->cbRecordDev->findText(settings.value("Recording Device", QVariant::fromValue(QString())).toString());
+    for (int i = 0; i < output_count; ++i)
+    {
+        SoundIoDevice *device = soundio_get_output_device(soundio, i);
+
+        if (Coordinator::isSupportedOutput(device))
+        {
+            ui->cbMonitorDev->addItem(QString::fromUtf8(device->name), QString::fromUtf8(device->id));
+        }
+
+        soundio_device_unref(device);
+    }
+
+    auto i = ui->cbRecordDev->findData(settings.value("Recording Device", QVariant::fromValue(QString())));
     if (i >= 0)
     {
         ui->cbRecordDev->setCurrentIndex(i);
     }
     else
     {
-        ui->cbRecordDev->setCurrentIndex(ui->cbRecordDev->findData(QVariant::fromValue(Pa_GetDefaultInputDevice())));
+        ui->cbRecordDev->setCurrentIndex(ui->cbRecordDev->findData(QVariant::fromValue(QString())));
     }
 
-    i = ui->cbMonitorDev->findText(settings.value("Monitor Device", QVariant::fromValue(QString())).toString());
+    i = ui->cbMonitorDev->findData(settings.value("Monitor Device", QVariant::fromValue(QString())));
     if (i >= 0)
     {
         ui->cbMonitorDev->setCurrentIndex(i);
     }
     else
     {
-        ui->cbMonitorDev->setCurrentIndex(ui->cbMonitorDev->findData(QVariant::fromValue(Pa_GetDefaultOutputDevice())));
+        ui->cbMonitorDev->setCurrentIndex(ui->cbMonitorDev->findData(QVariant::fromValue(QString())));
     }
 
     ui->slVolume->setValue(settings.value("Volume", QVariant::fromValue(100000000)).toInt());
@@ -71,7 +87,7 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
         artist = tr("Someone");
     ui->eMp3Artist->setText(artist);
 
-
+    soundio_destroy(soundio);
 
     QObject::connect(ui->cbMonitorDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbMonitorDevChanged);
     QObject::connect(ui->cbRecordDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbRecordDevChanged);
@@ -83,8 +99,6 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
 ConfiguratorPane::~ConfiguratorPane()
 {
     delete ui;
-
-    Pa_Terminate();
 }
 
 void ConfiguratorPane::hookupCoordinator(Coordinator *c)
@@ -105,14 +119,14 @@ void ConfiguratorPane::hookupCoordinator(Coordinator *c)
 
 void ConfiguratorPane::cbRecordDevChanged()
 {
-    QSettings().setValue("Recording Device", QVariant::fromValue(ui->cbRecordDev->currentText()));
-    emit recordingDevChanged(ui->cbRecordDev->currentData().value<PaDeviceIndex>());
+    QSettings().setValue("Recording Device", ui->cbRecordDev->currentData());
+    emit recordingDevChanged(ui->cbRecordDev->currentData().toString());
 }
 
 void ConfiguratorPane::cbMonitorDevChanged()
 {
-    QSettings().setValue("Monitor Device", QVariant::fromValue(ui->cbMonitorDev->currentText()));
-    emit monitorDevChanged(ui->cbMonitorDev->currentData().value<PaDeviceIndex>());
+    QSettings().setValue("Monitor Device", ui->cbMonitorDev->currentData());
+    emit monitorDevChanged(ui->cbMonitorDev->currentData().toString());
 }
 
 void ConfiguratorPane::slVolumeChanged()

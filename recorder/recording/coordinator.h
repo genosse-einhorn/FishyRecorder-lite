@@ -3,16 +3,18 @@
 
 #include <QObject>
 
-#include <portaudio.h>
-
 #include <atomic>
 #include <memory>
-
-#include "external/pa_ringbuffer.h"
 
 class QIODevice;
 class QTimer;
 class QFile;
+
+struct SoundIo;
+struct SoundIoDevice;
+struct SoundIoInStream;
+struct SoundIoOutStream;
+struct SoundIoRingBuffer;
 
 namespace Recording {
 
@@ -26,12 +28,12 @@ public:
     explicit Coordinator(QObject *parent = 0);
     ~Coordinator();
 
-    PaDeviceIndex recordingDevice() const { return m_recordingDev; }
-    PaDeviceIndex monitorDevice() const { return m_monitorDev; }
+    QString recordingDevice() const { return m_recordingDevId; }
+    QString monitorDevice() const { return m_monitorDevId; }
     bool monitorEnabled() const { return m_monitorEnabled; }
 
-    static bool isSupportedInput(PaDeviceIndex index, const PaDeviceInfo *info);
-    static bool isSupportedOutput(PaDeviceIndex index, const PaDeviceInfo *info);
+    static bool isSupportedInput(SoundIoDevice *dev);
+    static bool isSupportedOutput(SoundIoDevice *dev);
 
     bool isRecording() const { return m_mp3Stream != nullptr; }
     qint64 samplesRecorded() const { return m_samplesSaved; }
@@ -45,8 +47,8 @@ public:
 signals:
     void error(const QString &message);
 
-    void recordingDeviceChanged(const PaDeviceIndex &device);
-    void monitorDeviceChanged(const PaDeviceIndex &device);
+    void recordingDeviceChanged(const QString &deviceId);
+    void monitorDeviceChanged(const QString &deviceId);
     void monitorEnabledChanged(bool);
 
     void volumeFactorChanged(float);
@@ -58,8 +60,8 @@ signals:
     void recordingChanged(bool isRecording);
 
 public slots:
-    void setRecordingDevice(const PaDeviceIndex &device);
-    void setMonitorDevice(const PaDeviceIndex &device);
+    void setRecordingDevice(const QString &deviceId);
+    void setMonitorDevice(const QString &deviceId);
     void setMonitorEnabled(bool);
 
     void startRecording();
@@ -74,25 +76,26 @@ public slots:
     void setMp3ArtistName(const QString &name);
 
 private:
-    static int audioCallback(const void *inputBuffer, void *outputBuffer,
-                             unsigned long framesPerBuffer,
-                             const PaStreamCallbackTimeInfo* timeInfo,
-                             PaStreamCallbackFlags statusFlags,
-                             void *userData);
+    static void read_callback(struct SoundIoInStream *instream, int frame_count_min, int frame_count_max);
+    static void write_callback(struct SoundIoOutStream *outstream, int frame_count_min, int frame_count_max);
 
-    void stopAudio();
-    void startAudio();
+    void stopAudioInput();
+    void startAudioInput();
+    void stopMonitorOutput();
+    void startMonitorOutput();
 
     void processAudio();
 
 private:
+    SoundIo *m_soundio { nullptr };
+
     Recording::LevelCalculator *m_levelCalculator;
 
     QIODevice *m_mp3FileStream { nullptr };
     Recording::LameEncoderStream *m_mp3Stream { nullptr };
 
-    PaDeviceIndex m_recordingDev { paNoDevice };
-    PaDeviceIndex m_monitorDev { paNoDevice };
+    QString m_recordingDevId;
+    QString m_monitorDevId;
 
     std::atomic<float> m_volumeFactor { 1.0f };
 
@@ -104,10 +107,11 @@ private:
     QString m_filename;
     QString m_mp3ArtistName { "Someone" };
 
-    PaStream *m_audioStream { nullptr };
+    SoundIoInStream *m_audioInStream { nullptr };
+    SoundIoOutStream *m_audioOutStream { nullptr };
 
-    std::unique_ptr<float[]> m_ringbufferData;
-    PaUtilRingBuffer m_ringbuffer {};
+    SoundIoRingBuffer *m_recordRingBuffer { nullptr };
+    SoundIoRingBuffer *m_monitorRingBuffer { nullptr };
 };
 
 } // namespace Recording

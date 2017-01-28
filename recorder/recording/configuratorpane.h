@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-#include <portaudio.h>
-
 class QSettings;
 
 namespace Recording {
@@ -27,8 +25,8 @@ public:
     void hookupCoordinator(Coordinator *c);
 
 signals:
-    void recordingDevChanged(PaDeviceIndex i);
-    void monitorDevChanged(PaDeviceIndex i);
+    void recordingDevChanged(const QString &device);
+    void monitorDevChanged(const QString &device);
     void volumeChanged(float factor);
     void outputDirChanged(const QString &fdir);
     void mp3ArtistChanged(const QString &name);
