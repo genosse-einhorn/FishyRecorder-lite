@@ -13,15 +13,15 @@ LameEncoderStream::LameEncoderStream(QObject *parent)
 
 bool
 LameEncoderStream::init(const QString &artist, const QString &trackName,
-                        int brate, QIODevice *output)
+                        int brate, int samplerate, QIODevice *output)
 {
     m_device = output;
 
     lame_set_quality(m_lame_gbf, 5);
     lame_set_mode(m_lame_gbf, JOINT_STEREO);
     lame_set_brate(m_lame_gbf, brate);
-    lame_set_in_samplerate(m_lame_gbf, 48000);
-    lame_set_out_samplerate(m_lame_gbf, 48000);
+    lame_set_in_samplerate(m_lame_gbf, samplerate);
+    lame_set_out_samplerate(m_lame_gbf, samplerate);
 
     // ID3 tags are barely documented, but luckily we can read the lame(1) source code...
     id3tag_init(m_lame_gbf);
@@ -85,7 +85,7 @@ void LameEncoderStream::close()
 
 qint64 LameEncoderStream::writeAudio(float *buffer, qint64 numSamples)
 {
-    unsigned char outBuffer[(numSamples/48000 + 1)*lame_get_brate(m_lame_gbf) + 7200];
+    unsigned char outBuffer[(numSamples/lame_get_in_samplerate(m_lame_gbf) + 1)*lame_get_brate(m_lame_gbf) + 7200];
 
     int bytesEncoded = lame_encode_buffer_interleaved_ieee_float(m_lame_gbf, buffer,
         (int)numSamples, outBuffer, sizeof(outBuffer));

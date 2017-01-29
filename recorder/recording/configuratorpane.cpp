@@ -9,6 +9,16 @@
 
 #include "coordinator.h"
 
+namespace {
+    QString getDeviceDesc(SoundIoDevice *dev)
+    {
+        if (dev->is_raw)
+            return QString("%1 [RAW]").arg(QString::fromUtf8(dev->name));
+        else
+            return QString("%1").arg(QString::fromUtf8(dev->name));
+    }
+}
+
 namespace Recording {
 
 ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
@@ -35,7 +45,7 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
 
         if (Coordinator::isSupportedInput(device))
         {
-            ui->cbRecordDev->addItem(QString::fromUtf8(device->name), QString::fromUtf8(device->id));
+            ui->cbRecordDev->addItem(getDeviceDesc(device), Coordinator::uniqueDeviceId(device));
         }
 
         soundio_device_unref(device);
@@ -47,7 +57,7 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
 
         if (Coordinator::isSupportedOutput(device))
         {
-            ui->cbMonitorDev->addItem(QString::fromUtf8(device->name), QString::fromUtf8(device->id));
+            ui->cbMonitorDev->addItem(getDeviceDesc(device), Coordinator::uniqueDeviceId(device));
         }
 
         soundio_device_unref(device);

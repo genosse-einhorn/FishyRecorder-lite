@@ -17,7 +17,7 @@
 
 namespace
 {
-    const int SAMPLE_RATE = 48000;
+    const int SAMPLE_RATE = 44100;
     const int SAMPLE_SIZE = 2 * sizeof(float); // 2*4 bytes
 
     int soundio_x_ring_buffer_read(SoundIoRingBuffer *buffer, void* out, int bytes)
@@ -31,6 +31,14 @@ namespace
         soundio_ring_buffer_advance_read_ptr(buffer, copy_bytes);
 
         return copy_bytes;
+    }
+
+    qint32 SIGN_EXTEND_24_TO_32(qint32 b24)
+    {
+        if (b24 & 0x800000)
+            return 0xff << 24 | (b24 & 0xffffff);
+        else
+            return b24 & 0xffffff;
     }
 }
 
@@ -47,7 +55,7 @@ Coordinator::Coordinator(QObject *parent) : QObject(parent)
     QObject::connect(m_levelCalculator, &LevelCalculator::levelUpdate, this, &Coordinator::handleLevelUpdate);
 
     m_recordRingBuffer = soundio_ring_buffer_create(m_soundio, SAMPLE_RATE * SAMPLE_SIZE * 10);
-    m_monitorRingBuffer = soundio_ring_buffer_create(m_soundio, SAMPLE_RATE * SAMPLE_SIZE * 1);
+    m_monitorRingBuffer = soundio_ring_buffer_create(m_soundio, SAMPLE_RATE * SAMPLE_SIZE * 0.2);
 
     QTimer *t = new QTimer(this);
     t->setInterval(40);
@@ -68,9 +76,12 @@ Coordinator::~Coordinator()
 bool Coordinator::isSupportedInput(SoundIoDevice *device)
 {
     return (device->aim == SoundIoDeviceAimInput)
-        && soundio_device_supports_format(device, SoundIoFormatFloat32NE)
+        && (soundio_device_supports_format(device, SoundIoFormatFloat32NE)
+            || soundio_device_supports_format(device, SoundIoFormatS16NE)
+            || soundio_device_supports_format(device, SoundIoFormatS24NE)
+            || soundio_device_supports_format(device, SoundIoFormatS32NE))
         && soundio_device_supports_layout(device, soundio_channel_layout_get_builtin(SoundIoChannelLayoutIdStereo))
-        && soundio_device_supports_sample_rate(device, 48000);
+        && soundio_device_supports_sample_rate(device, SAMPLE_RATE);
 }
 
 bool Coordinator::isSupportedOutput(SoundIoDevice *device)
@@ -78,7 +89,14 @@ bool Coordinator::isSupportedOutput(SoundIoDevice *device)
     return (device->aim == SoundIoDeviceAimOutput)
         && soundio_device_supports_format(device, SoundIoFormatFloat32NE)
         && soundio_device_supports_layout(device, soundio_channel_layout_get_builtin(SoundIoChannelLayoutIdStereo))
-        && soundio_device_supports_sample_rate(device, 48000);
+        && soundio_device_supports_sample_rate(device, SAMPLE_RATE);
+}
+
+QString Coordinator::uniqueDeviceId(SoundIoDevice *dev)
+{
+    QString dir = dev->aim == SoundIoDeviceAimInput ? "IN" : "OUT";
+    QString raw = dev->is_raw ? "RAW" : "COOKED";
+    return QString("%1/%2/%3").arg(QString::fromUtf8(dev->id), dir, raw);
 }
 
 void Coordinator::setRecordingDevice(const QString &deviceId)
@@ -143,7 +161,7 @@ void Coordinator::startRecording()
     m_mp3Stream = new LameEncoderStream(this);
     QObject::connect(m_mp3Stream, &LameEncoderStream::error, this, &Coordinator::error);
 
-    if (!m_mp3Stream->init(m_mp3ArtistName, track, 192, m_mp3FileStream))
+    if (!m_mp3Stream->init(m_mp3ArtistName, track, 192, SAMPLE_RATE, m_mp3FileStream))
     {
         stopRecording();
         return;
@@ -227,7 +245,7 @@ void Coordinator::read_callback(SoundIoInStream *instream, int frame_count_min, 
     int free_count_rec = free_bytes_rec / instream->bytes_per_frame;
     int free_count_mon = free_bytes_mon / instream->bytes_per_frame;
 
-    if (free_count_rec < frame_count_min && free_count_mon < frame_count_min)
+    if (free_count_rec < frame_count_min)
     {
         // ringbuffer overflow... we'll ignore it and just skip the samples this time
         return;
@@ -256,8 +274,8 @@ void Coordinator::read_callback(SoundIoInStream *instream, int frame_count_min, 
         {
             // Due to an overflow there is a hole. Fill the ring buffer with
             // silence for the size of the hole.
-            std::memset(write_ptr_rec, 0, std::max(0, std::min(frame_count, frames_left_rec)) * instream->bytes_per_frame);
-            std::memset(write_ptr_mon, 0, std::max(0, std::min(frame_count, frames_left_mon)) * instream->bytes_per_frame);
+            std::memset(write_ptr_rec, 0, std::max(0, std::min(frame_count, frames_left_rec)) * sizeof(float));
+            std::memset(write_ptr_mon, 0, std::max(0, std::min(frame_count, frames_left_mon)) * sizeof(float));
         }
         else
         {
@@ -265,14 +283,25 @@ void Coordinator::read_callback(SoundIoInStream *instream, int frame_count_min, 
             {
                 for (int ch = 0; ch < instream->layout.channel_count; ch += 1)
                 {
-                    Q_ASSERT(sizeof(float) == instream->bytes_per_sample);
-                    *((float*)write_ptr_rec) = *((float*)areas[ch].ptr) * multiplier_rec;
-                    write_ptr_rec += instream->bytes_per_sample;
+                    float sample = 0.0f;
+                    if (instream->format == SoundIoFormatFloat32NE)
+                        sample = *((float*)areas[ch].ptr);
+                    else if (instream->format == SoundIoFormatS16NE)
+                        sample =  float(*((qint16*)areas[ch].ptr)) / float(0x8000);
+                    else if (instream->format == SoundIoFormatS24NE)
+                    {
+                       sample = double(SIGN_EXTEND_24_TO_32(*((qint32*)areas[ch].ptr))) / double(1 << 23);
+                    }
+                    else if (instream->format == SoundIoFormatS32NE)
+                        sample = double(*((qint32*)areas[ch].ptr)) / double(std::numeric_limits<qint32>::max());
+
+                    *((float*)write_ptr_rec) = sample * multiplier_rec;
+                    write_ptr_rec += sizeof(float);
 
                     if (frame < frames_left_mon)
                     {
-                        *((float*)write_ptr_mon) = *((float*)areas[ch].ptr) * multiplier_mon;
-                        write_ptr_mon += instream->bytes_per_sample;
+                        *((float*)write_ptr_mon) = sample * multiplier_mon;
+                        write_ptr_mon += sizeof(float);
                     }
 
                     areas[ch].ptr += areas[ch].step;
@@ -393,7 +422,7 @@ void Coordinator::startAudioInput()
     {
         SoundIoDevice *device = soundio_get_input_device(m_soundio, i);
 
-        if (QString(device->id) == m_recordingDevId)
+        if (uniqueDeviceId(device) == m_recordingDevId)
         {
             dev = device;
             break;
@@ -410,7 +439,15 @@ void Coordinator::startAudioInput()
     }
 
     SoundIoInStream *stream = soundio_instream_create(dev);
-    stream->format = SoundIoFormatFloat32NE;
+    if (soundio_device_supports_format(dev, SoundIoFormatFloat32NE))
+        stream->format = SoundIoFormatFloat32NE;
+    else if (soundio_device_supports_format(dev, SoundIoFormatS32NE))
+        stream->format = SoundIoFormatS32NE;
+    else if (soundio_device_supports_format(dev, SoundIoFormatS24NE))
+        stream->format = SoundIoFormatS24NE;
+    else
+        stream->format = SoundIoFormatS16NE;
+
     stream->sample_rate = SAMPLE_RATE;
     stream->software_latency = 0.01;
     stream->read_callback = &Coordinator::read_callback;
@@ -468,7 +505,7 @@ void Coordinator::startMonitorOutput()
     {
         SoundIoDevice *device = soundio_get_output_device(m_soundio, i);
 
-        if (QString(device->id) == m_monitorDevId)
+        if (uniqueDeviceId(device) == m_monitorDevId)
         {
             dev = device;
             break;

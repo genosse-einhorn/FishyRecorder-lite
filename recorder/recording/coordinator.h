@@ -35,6 +35,10 @@ public:
     static bool isSupportedInput(SoundIoDevice *dev);
     static bool isSupportedOutput(SoundIoDevice *dev);
 
+    // A string which identifies a device uniquely, unlike SoundIoDevice::id
+    // The same device will get different ids for input, output and raw modes
+    static QString uniqueDeviceId(SoundIoDevice *dev);
+
     bool isRecording() const { return m_mp3Stream != nullptr; }
     qint64 samplesRecorded() const { return m_samplesSaved; }
 

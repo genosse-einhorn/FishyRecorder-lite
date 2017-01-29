@@ -22,7 +22,7 @@ signals:
     void error(const QString &message);
 
 public slots:
-    bool init(const QString& artist, const QString &track, int brate, QIODevice *output);
+    bool init(const QString& artist, const QString &track, int brate, int samplerate, QIODevice *output);
 
     qint64 writeAudio(float *samples, qint64 count);
 

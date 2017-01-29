@@ -34,7 +34,7 @@ void FancyProgressBar::paintEvent(QPaintEvent *)
 
     QPainter painter(this);
 
-    if (boxWidth > width()) {
+    if (boxWidth >= width()) {
         painter.fillRect(0, 0, width(), height(), palette().brush(palette().currentColorGroup(), QPalette::Highlight));
     } else {
         painter.fillRect(0, 0, width(), height(), palette().brush(palette().currentColorGroup(), QPalette::Background));
