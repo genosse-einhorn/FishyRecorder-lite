@@ -3,7 +3,6 @@
 
 #include "recording/coordinator.h"
 
-#include <portaudio.h>
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QFileDialog>
