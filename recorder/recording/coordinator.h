@@ -68,6 +68,7 @@ public slots:
     void setMonitorDevice(const QString &deviceId);
     void setMonitorEnabled(bool);
 
+    void startNewTrack();
     void startRecording();
     void stopRecording();
     void setRecording(bool record);

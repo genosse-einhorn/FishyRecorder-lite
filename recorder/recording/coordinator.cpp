@@ -40,6 +40,21 @@ namespace
         else
             return b24 & 0xffffff;
     }
+
+    QString makeFilenameUnique(const QString &filename)
+    {
+        auto i = QFileInfo(filename);
+        auto n = QFileInfo(filename);
+        int c = 0;
+        while (n.exists()) {
+            c++;
+            n.setFile(QString("%1/%2 (%3).%4")
+                      .arg(i.path()).arg(i.completeBaseName())
+                      .arg(c).arg(i.suffix()));
+        }
+
+        return n.filePath();
+    }
 }
 
 namespace Recording {
@@ -133,6 +148,16 @@ void Coordinator::setMonitorEnabled(bool enabled)
     }
 }
 
+void Coordinator::startNewTrack()
+{
+    // block signals so we don't end up in some sort of loop
+    // I don't actually know why it's necessary but it works
+    bool blocked = this->blockSignals(true);
+    stopRecording();
+    startRecording();
+    this->blockSignals(blocked);
+}
+
 void Coordinator::startRecording()
 {
     if (isRecording())
@@ -146,9 +171,10 @@ void Coordinator::startRecording()
     }
 
     QString filename = QString(tr("Recording from %2.mp3"))
-            .arg(QDateTime::currentDateTime().toString(tr("yyyy-MM-dd hhmm t")));
+            .arg(QDateTime::currentDateTime().toString(tr("yyyy-MM-dd hhmmss")));
 
-    m_mp3FileStream = new QFile(QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename)));
+    m_mp3FileStream = new QFile(makeFilenameUnique(
+        QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename))));
     if (!m_mp3FileStream->open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         error(tr("MP3: Could not open file %1: %2").arg(filename, m_mp3FileStream->errorString()));
