@@ -3,6 +3,8 @@
 
 #include <QTimer>
 
+#include "coordinator.h"
+
 namespace Recording {
 
 StatusView::StatusView(QWidget *parent) :
@@ -35,9 +37,9 @@ void StatusView::handleStatusUpdate(float levelL, float levelR, bool isRecording
             m_blinkTimer->start();
 
         qint64 samples = sampleCount;
-        qint64 seconds = (samples / 48000) % 60;
-        qint64 minutes = (samples / 48000 / 60) % 60;
-        qint64 hours = samples / 48000 / 60 / 60;
+        qint64 seconds = (samples / Coordinator::SAMPLE_RATE) % 60;
+        qint64 minutes = (samples / Coordinator::SAMPLE_RATE / 60) % 60;
+        qint64 hours = samples / Coordinator::SAMPLE_RATE / 60 / 60;
 
         ui->lTime->setText(QString("%1:%2:%3")
                               .arg(hours)

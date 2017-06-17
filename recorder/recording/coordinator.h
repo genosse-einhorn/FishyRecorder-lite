@@ -25,6 +25,9 @@ class Coordinator : public QObject
 {
     Q_OBJECT
 public:
+    static const int SAMPLE_RATE = 44100;
+    static const int SAMPLE_SIZE = 2 * sizeof(float); // 2*4 bytes
+
     explicit Coordinator(QObject *parent = 0);
     ~Coordinator();
 

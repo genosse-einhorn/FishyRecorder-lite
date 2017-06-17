@@ -17,9 +17,6 @@
 
 namespace
 {
-    const int SAMPLE_RATE = 44100;
-    const int SAMPLE_SIZE = 2 * sizeof(float); // 2*4 bytes
-
     int soundio_x_ring_buffer_read(SoundIoRingBuffer *buffer, void* out, int bytes)
     {
         int fill_bytes = soundio_ring_buffer_fill_count(buffer);
