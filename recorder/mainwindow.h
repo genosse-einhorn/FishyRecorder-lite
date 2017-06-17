@@ -23,6 +23,8 @@ private:
     Ui::MainWindow *ui;
 
     Recording::Coordinator *m_recorder;
+
+    void crashMe() const;
 };
 
 #endif // MAINWINDOW_H
