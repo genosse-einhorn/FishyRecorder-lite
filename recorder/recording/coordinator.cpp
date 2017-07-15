@@ -290,6 +290,13 @@ void Coordinator::read_callback(SoundIoInStream *instream, int frame_count_min, 
             return;
         }
 
+        // XXX: We had some strange crashes and I believe this might be the cause
+        if ((frame_count > frames_left_rec) || (frame_count < 0))
+        {
+            qWarning() << "mystery bug: libsoundio gives us frames we didn't ask for! frame_count=" << frame_count;
+            return;
+        }
+
         if (!frame_count)
             break;
 
@@ -422,6 +429,20 @@ void Coordinator::write_callback(SoundIoOutStream *outstream, int frame_count_mi
     soundio_ring_buffer_advance_read_ptr(c->m_monitorRingBuffer, read_count * outstream->bytes_per_frame);
 }
 
+void Coordinator::error_callback_in(SoundIoInStream *instream, int err)
+{
+    Coordinator *c = static_cast<Coordinator*>(instream->userdata);
+
+    emit c->error(QString("Internal unrecoverable error for input stream: %1. Please restart the application.").arg(soundio_strerror(err)));
+}
+
+void Coordinator::error_callback_out(SoundIoOutStream *outstream, int err)
+{
+    Coordinator *c = static_cast<Coordinator*>(outstream->userdata);
+
+    emit c->error(QString("Internal unrecoverable error for output stream: %1. Please restart the application.").arg(soundio_strerror(err)));
+}
+
 void Coordinator::stopAudioInput()
 {
     if (!m_audioInStream)
@@ -477,6 +498,7 @@ void Coordinator::startAudioInput()
     stream->overflow_callback = [](SoundIoInStream *) {
         qWarning() << "Audio input overflow!";
     };
+    stream->error_callback = &Coordinator::error_callback_in;
     stream->userdata = static_cast<void*>(this);
 
     int err = soundio_instream_open(stream);
@@ -552,6 +574,7 @@ void Coordinator::startMonitorOutput()
     stream->underflow_callback = [](SoundIoOutStream *) {
         qWarning() << "Audio output underflow!";
     };
+    stream->error_callback = &Coordinator::error_callback_out;
     stream->userdata = static_cast<void*>(this);
 
     int err = soundio_outstream_open(stream);

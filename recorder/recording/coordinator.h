@@ -86,6 +86,8 @@ public slots:
 private:
     static void read_callback(struct SoundIoInStream *instream, int frame_count_min, int frame_count_max);
     static void write_callback(struct SoundIoOutStream *outstream, int frame_count_min, int frame_count_max);
+    static void error_callback_in(struct SoundIoInStream *instream, int err);
+    static void error_callback_out(struct SoundIoOutStream *outstream, int err);
 
     void stopAudioInput();
     void startAudioInput();
