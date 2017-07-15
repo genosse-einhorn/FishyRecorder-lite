@@ -30,14 +30,6 @@ namespace
         return copy_bytes;
     }
 
-    qint32 SIGN_EXTEND_24_TO_32(qint32 b24)
-    {
-        if (b24 & 0x800000)
-            return 0xff << 24 | (b24 & 0xffffff);
-        else
-            return b24 & 0xffffff;
-    }
-
     QString makeFilenameUnique(const QString &filename)
     {
         auto i = QFileInfo(filename);
@@ -51,6 +43,55 @@ namespace
         }
 
         return n.filePath();
+    }
+
+    static inline void write_float(void *p, float val)
+    {
+        // This avoids potential aliasing UB when writing to the buffer.
+        // Every self-respecting compiler will optimize it out to a simple
+        // mov instruction, like it would for a regular assignment
+        std::memcpy(p, &val, sizeof val);
+    }
+
+    static inline float read_float(void *p)
+    {
+        // This avoids potential aliasing UB when reading from the buffer.
+        // Every self-respecting compiler will optimize it out to a simple
+        // mov instruction, like it would for a regular assignment
+        float val;
+        std::memcpy(&val, p, sizeof val);
+        return val;
+    }
+
+    static inline qint16 read_int16(void *p)
+    {
+        // This avoids potential aliasing UB when reading from the buffer.
+        // Every self-respecting compiler will optimize it out to a simple
+        // mov instruction, like it would for a regular assignment
+        qint16 val;
+        std::memcpy(&val, p, sizeof val);
+        return val;
+    }
+
+    static inline qint32 read_int32(void *p)
+    {
+        // This avoids potential aliasing UB when reading from the buffer.
+        // Every self-respecting compiler will optimize it out to a simple
+        // mov instruction, like it would for a regular assignment
+        qint32 val;
+        std::memcpy(&val, p, sizeof val);
+        return val;
+    }
+
+    static inline qint32 read_int24_as_32(void *p)
+    {
+        // FIXME: This has non-portable assumptions!
+        // - little endian
+        // - 2s complement integers
+        // - unsigned-to-signed cast keeps bit battern (implementation defined behavior)
+        unsigned char val[3];
+        std::memcpy(val, p, sizeof val);
+        return qint32((quint32(val[0]) << 8) | (quint32(val[1]) << 16) | (quint32(val[2]) << 24)) >> 8;
     }
 }
 
@@ -315,22 +356,20 @@ void Coordinator::read_callback(SoundIoInStream *instream, int frame_count_min, 
                 {
                     float sample = 0.0f;
                     if (instream->format == SoundIoFormatFloat32NE)
-                        sample = *((float*)areas[ch].ptr);
+                        sample = read_float(areas[ch].ptr);
                     else if (instream->format == SoundIoFormatS16NE)
-                        sample =  float(*((qint16*)areas[ch].ptr)) / float(0x8000);
+                        sample =  float(read_int16(areas[ch].ptr)) / float(0x8000);
                     else if (instream->format == SoundIoFormatS24NE)
-                    {
-                       sample = double(SIGN_EXTEND_24_TO_32(*((qint32*)areas[ch].ptr))) / double(1 << 23);
-                    }
+                        sample = double(read_int24_as_32(areas[ch].ptr)) / double(1 << 23);
                     else if (instream->format == SoundIoFormatS32NE)
-                        sample = double(*((qint32*)areas[ch].ptr)) / double(std::numeric_limits<qint32>::max());
+                        sample = double(read_int32(areas[ch].ptr)) / double(std::numeric_limits<qint32>::max());
 
-                    *((float*)write_ptr_rec) = sample * multiplier_rec;
+                    write_float(write_ptr_rec, sample * multiplier_rec);
                     write_ptr_rec += sizeof(float);
 
                     if (frame < frames_left_mon)
                     {
-                        *((float*)write_ptr_mon) = sample * multiplier_mon;
+                        write_float(write_ptr_mon, sample * multiplier_mon);
                         write_ptr_mon += sizeof(float);
                     }
 

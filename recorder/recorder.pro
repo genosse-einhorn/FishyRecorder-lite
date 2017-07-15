@@ -20,6 +20,12 @@ CONFIG(debug) {
 }
 DEFINES += SOUNDIO_STATIC_LIBRARY
 
+QMAKE_CXXFLAGS_DEBUG -= -O0
+QMAKE_CXXFLAGS_DEBUG -= -O1
+QMAKE_CXXFLAGS_DEBUG -= -O2
+QMAKE_CXXFLAGS_DEBUG -= -O3
+QMAKE_CXXFLAGS_DEBUG *= -Og
+
 SOURCES += main.cpp\
     mainwindow.cpp \
     recording/lameencoderstream.cpp \
