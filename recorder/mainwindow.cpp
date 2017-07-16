@@ -25,6 +25,23 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_recorder, &Recording::Coordinator::monitorEnabledChanged, ui->bEnableMonitor, &QAbstractButton::setChecked);
 
     ui->configPane->hookupCoordinator(m_recorder);
+
+    for (QWidget *w: this->findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly))
+    {
+        QPalette p = w->palette();
+        p.setColor(QPalette::Background, this->palette().color(QPalette::Background));
+        w->setPalette(p);
+    }
+
+    QPalette statusPalette = ui->statusView->palette();
+    statusPalette.setColor(QPalette::Background, QColor(0x40, 0x42, 0x44));
+    statusPalette.setColor(QPalette::Foreground, QColor(0xbf, 0xc1, 0xc2));
+    statusPalette.setColor(QPalette::Highlight, QColor(0xba, 0x60, 0x00));
+    ui->statusView->setPalette(statusPalette);
+    QPalette windowPalette = this->palette();
+    windowPalette.setColor(QPalette::Background, statusPalette.color(QPalette::Background));
+    this->setPalette(windowPalette);
+
 }
 
 MainWindow::~MainWindow()
