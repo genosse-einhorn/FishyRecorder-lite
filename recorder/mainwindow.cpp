@@ -24,18 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, ui->bNewTrack, &QAbstractButton::setEnabled);
     QObject::connect(m_recorder, &Recording::Coordinator::monitorEnabledChanged, ui->bEnableMonitor, &QAbstractButton::setChecked);
 
-    QObject::connect(ui->bDebugCrash, &QAbstractButton::clicked, this, &MainWindow::crashMe);
-
     ui->configPane->hookupCoordinator(m_recorder);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::crashMe() const
-{
-    // UB here we come...
-    *((unsigned int*)0) = 0xDEAD;
 }

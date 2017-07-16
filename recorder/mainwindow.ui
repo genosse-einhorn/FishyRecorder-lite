@@ -40,13 +40,6 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="3">
-       <widget class="QPushButton" name="bDebugCrash">
-        <property name="text">
-         <string>DEBUG: CRASH</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
        <widget class="QPushButton" name="bEnableMonitor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
