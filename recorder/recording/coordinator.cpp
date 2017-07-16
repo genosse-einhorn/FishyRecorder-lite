@@ -408,10 +408,22 @@ void Coordinator::write_callback(SoundIoOutStream *outstream, int frame_count_mi
     int fill_bytes = soundio_ring_buffer_fill_count(c->m_monitorRingBuffer);
     int fill_count = fill_bytes / outstream->bytes_per_frame;
 
+    // XXX: frame_count_min is too generous, will lead to underflow. We want at least 10ms of audio data filled up.
+    frame_count_min = std::max(frame_count_min, std::min(SAMPLE_RATE / 100, frame_count_max));
+
     if (frame_count_min > fill_count)
     {
+        /*qWarning() << "Filling up with silence frame_count_min=" << frame_count_min
+                   << "frame_count_max=" << frame_count_max
+                   << "fill_count=" << fill_count;
+        */
+        int frames_left = frame_count_max;
+
         // Ring buffer does not have enough data, fill with zeroes.
-        for (;;) {
+        while (frames_left > 0)
+        {
+            frame_count = frames_left;
+
             if ((err = soundio_outstream_begin_write(outstream, &areas, &frame_count)))
             {
                 qWarning() << "begin write error: " << soundio_strerror(err);
@@ -427,45 +439,50 @@ void Coordinator::write_callback(SoundIoOutStream *outstream, int frame_count_mi
             }
             if ((err = soundio_outstream_end_write(outstream)))
                 qWarning() << "end write error: " << soundio_strerror(err);
+
+            frames_left -= frame_count;
         }
     }
-
-    int read_count = std::min(frame_count_max, fill_count);
-    int frames_left = read_count;
-
-    while (frames_left > 0)
+    else
     {
-        int frame_count = frames_left;
 
-        if ((err = soundio_outstream_begin_write(outstream, &areas, &frame_count)))
+        int read_count = std::min(frame_count_max, fill_count);
+        int frames_left = read_count;
+
+        while (frames_left > 0)
         {
-            qWarning() << "begin write error: " << soundio_strerror(err);
-            return;
-        }
+            int frame_count = frames_left;
 
-        if (frame_count <= 0)
-            break;
-
-        for (int frame = 0; frame < frame_count; frame += 1)
-        {
-            for (int ch = 0; ch < outstream->layout.channel_count; ch += 1)
+            if ((err = soundio_outstream_begin_write(outstream, &areas, &frame_count)))
             {
-                memcpy(areas[ch].ptr, read_ptr, outstream->bytes_per_sample);
-                areas[ch].ptr += areas[ch].step;
-                read_ptr += outstream->bytes_per_sample;
+                qWarning() << "begin write error: " << soundio_strerror(err);
+                return;
             }
+
+            if (frame_count <= 0)
+                break;
+
+            for (int frame = 0; frame < frame_count; frame += 1)
+            {
+                for (int ch = 0; ch < outstream->layout.channel_count; ch += 1)
+                {
+                    memcpy(areas[ch].ptr, read_ptr, outstream->bytes_per_sample);
+                    areas[ch].ptr += areas[ch].step;
+                    read_ptr += outstream->bytes_per_sample;
+                }
+            }
+
+            if ((err = soundio_outstream_end_write(outstream)))
+            {
+                qWarning() << "end write error: " << soundio_strerror(err);
+                return;
+            }
+
+            frames_left -= frame_count;
         }
 
-        if ((err = soundio_outstream_end_write(outstream)))
-        {
-            qWarning() << "end write error: " << soundio_strerror(err);
-            return;
-        }
-
-        frames_left -= frame_count;
+        soundio_ring_buffer_advance_read_ptr(c->m_monitorRingBuffer, read_count * outstream->bytes_per_frame);
     }
-
-    soundio_ring_buffer_advance_read_ptr(c->m_monitorRingBuffer, read_count * outstream->bytes_per_frame);
 }
 
 void Coordinator::error_callback_in(SoundIoInStream *instream, int err)
@@ -608,7 +625,7 @@ void Coordinator::startMonitorOutput()
     SoundIoOutStream *stream = soundio_outstream_create(dev);
     stream->format = SoundIoFormatFloat32NE;
     stream->sample_rate = SAMPLE_RATE;
-    stream->software_latency = 0.01;
+    stream->software_latency = 0.05;
     stream->write_callback = &Coordinator::write_callback;
     stream->underflow_callback = [](SoundIoOutStream *) {
         qWarning() << "Audio output underflow!";
@@ -640,6 +657,9 @@ void Coordinator::startMonitorOutput()
     }
 
     m_audioOutStream = stream;
+
+    // clear monitor ringbuf
+    soundio_ring_buffer_advance_read_ptr(this->m_monitorRingBuffer, soundio_ring_buffer_fill_count(this->m_monitorRingBuffer));
 }
 
 void Coordinator::processAudio()
