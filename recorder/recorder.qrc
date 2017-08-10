@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/audio-headphones.svg</file>
+        <file>img/media-playback-pause.svg</file>
+        <file>img/media-playback-stop.svg</file>
+        <file>img/media-record.svg</file>
+    </qresource>
+</RCC>

@@ -18,10 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_recorder, &Recording::Coordinator::error, ui->errorWidget, &Recording::ErrorWidget::displayError);
 
     QObject::connect(ui->bEnableMonitor, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setMonitorEnabled);
-    QObject::connect(ui->bEnableRecord, &QAbstractButton::toggled, m_recorder, &Recording::Coordinator::setRecording);
+    QObject::connect(ui->bEnableRecord, &QAbstractButton::clicked, m_recorder, &Recording::Coordinator::startRecording);
+    QObject::connect(ui->bStop, &QAbstractButton::clicked, m_recorder, &Recording::Coordinator::stopRecording);
     QObject::connect(ui->bNewTrack, &QAbstractButton::clicked, m_recorder, &Recording::Coordinator::startNewTrack);
-    QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, ui->bEnableRecord, &QAbstractButton::setChecked);
-    QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, ui->bNewTrack, &QAbstractButton::setEnabled);
+    QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, this, &MainWindow::recordingStateChanged);
     QObject::connect(m_recorder, &Recording::Coordinator::monitorEnabledChanged, ui->bEnableMonitor, &QAbstractButton::setChecked);
 
     ui->configPane->hookupCoordinator(m_recorder);
@@ -47,4 +47,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::recordingStateChanged(bool isRecording)
+{
+    ui->bEnableRecord->setEnabled(!isRecording);
+    ui->bNewTrack->setEnabled(isRecording);
+    ui->bStop->setEnabled(isRecording);
 }

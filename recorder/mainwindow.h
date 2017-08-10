@@ -23,6 +23,8 @@ private:
     Ui::MainWindow *ui;
 
     Recording::Coordinator *m_recorder;
+
+    void recordingStateChanged(bool isRecording);
 };
 
 #endif // MAINWINDOW_H

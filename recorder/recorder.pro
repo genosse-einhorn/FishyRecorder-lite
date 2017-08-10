@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets svg
 
 CONFIG   += c++14 console link_pkgconfig link_prl
 
@@ -50,3 +50,6 @@ FORMS    += mainwindow.ui \
     recording/recordingconfiguratorpane.ui
 
 INCLUDEPATH += ../libsoundio/soundio
+
+RESOURCES += \
+    recorder.qrc
