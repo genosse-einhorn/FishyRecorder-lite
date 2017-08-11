@@ -37,6 +37,13 @@
      </widget>
     </item>
     <item>
+     <widget class="Recording::LastFilePane" name="lastFilePane" native="true">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -171,6 +178,12 @@
    <class>Recording::ConfiguratorPane</class>
    <extends>QWidget</extends>
    <header>recording/configuratorpane.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Recording::LastFilePane</class>
+   <extends>QWidget</extends>
+   <header>recording/lastfilepane.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

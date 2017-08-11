@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>931</width>
-    <height>388</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,48 +175,6 @@
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="eMp3Artist"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="gbOutputFile">
-     <property name="title">
-      <string>Output File</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_3">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lLastOutput">
-        <property name="text">
-         <string>Last written to</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="lLastFile">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to show file in file manager&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>&lt;a href=&quot;#&quot;&gt;FIXME&lt;/a&gt;</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::RichText</enum>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>

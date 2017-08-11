@@ -37,8 +37,6 @@ private slots:
     void slVolumeChanged();
     void outputDirButtonClick();
     void eMp3ArtistTextChanged();
-    void recordingFileOpened(const QString &file);
-    void recordingFileClicked(const QString &url);
 
 private:
     Ui::RecordingConfiguratorPane *ui;

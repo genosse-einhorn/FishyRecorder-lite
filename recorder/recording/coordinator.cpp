@@ -188,12 +188,8 @@ void Coordinator::setMonitorEnabled(bool enabled)
 
 void Coordinator::startNewTrack()
 {
-    // block signals so we don't end up in some sort of loop
-    // I don't actually know why it's necessary but it works
-    bool blocked = this->blockSignals(true);
     stopRecording();
     startRecording();
-    this->blockSignals(blocked);
 }
 
 void Coordinator::startRecording()

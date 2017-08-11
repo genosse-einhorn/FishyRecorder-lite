@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     recording/errorwidget.cpp \
     recording/fancyprogressbar.cpp \
     recording/levelcalculator.cpp \
-    recording/statusview.cpp
+    recording/statusview.cpp \
+    recording/lastfilepane.cpp
 
 HEADERS  += mainwindow.h \
     recording/lameencoderstream.h \
@@ -43,11 +44,13 @@ HEADERS  += mainwindow.h \
     recording/errorwidget.h \
     recording/fancyprogressbar.h \
     recording/levelcalculator.h \
-    recording/statusview.h
+    recording/statusview.h \
+    recording/lastfilepane.h
 
 FORMS    += mainwindow.ui \
     recording/recordingstatusview.ui \
-    recording/recordingconfiguratorpane.ui
+    recording/recordingconfiguratorpane.ui \
+    recording/lastfilepane.ui
 
 INCLUDEPATH += ../libsoundio/soundio
 

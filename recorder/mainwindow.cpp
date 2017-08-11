@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->bNewTrack, &QAbstractButton::clicked, m_recorder, &Recording::Coordinator::startNewTrack);
     QObject::connect(m_recorder, &Recording::Coordinator::recordingChanged, this, &MainWindow::recordingStateChanged);
     QObject::connect(m_recorder, &Recording::Coordinator::monitorEnabledChanged, ui->bEnableMonitor, &QAbstractButton::setChecked);
+    QObject::connect(m_recorder, &Recording::Coordinator::recordingFileOpened, ui->lastFilePane, &Recording::LastFilePane::newRecordingFile);
 
     ui->configPane->hookupCoordinator(m_recorder);
 
