@@ -56,3 +56,5 @@ INCLUDEPATH += ../libsoundio/soundio
 
 RESOURCES += \
     recorder.qrc
+
+TRANSLATIONS += l10n/recorder_de.ts

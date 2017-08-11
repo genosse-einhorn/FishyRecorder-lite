@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>KuemmelRecorder-lite</string>
+   <string notr="true">&lt;&gt;&lt; Recorder (Lite)</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -84,7 +84,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Enable Monitor</string>
+         <string>Monitor</string>
         </property>
         <property name="icon">
          <iconset theme="audio-headphones" resource="recorder.qrc">

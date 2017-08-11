@@ -5,4 +5,7 @@
         <file>img/media-playback-stop.svg</file>
         <file>img/media-record.svg</file>
     </qresource>
+    <qresource prefix="/l10n">
+        <file alias="de.qm">l10n/recorder_de.qm</file>
+    </qresource>
 </RCC>

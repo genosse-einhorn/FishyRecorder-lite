@@ -205,7 +205,7 @@ void Coordinator::startRecording()
     }
 
     QString filename = QString(tr("Recording from %2.mp3"))
-            .arg(QDateTime::currentDateTime().toString(tr("yyyy-MM-dd hhmmss")));
+            .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hhmmss"));
 
     QString fullFilename = makeFilenameUnique(QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename)));
     m_mp3FileStream = new QFile(fullFilename);
