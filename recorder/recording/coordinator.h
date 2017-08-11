@@ -66,6 +66,8 @@ signals:
     void statusUpdate(float levelL, float levelR, bool isRecording, qint64 recordedSamples);
     void recordingChanged(bool isRecording);
 
+    void recordingFileOpened(const QString &filename);
+
 public slots:
     void setRecordingDevice(const QString &deviceId);
     void setMonitorDevice(const QString &deviceId);

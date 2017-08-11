@@ -4,6 +4,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QFileDialog>
+#include <QProcess>
+#include <QDebug>
 
 #include <soundio.h>
 
@@ -104,6 +106,12 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
     QObject::connect(ui->slVolume, &QSlider::valueChanged, this, &ConfiguratorPane::slVolumeChanged);
     QObject::connect(ui->bPicker, &QAbstractButton::clicked, this, &ConfiguratorPane::outputDirButtonClick);
     QObject::connect(ui->eMp3Artist, &QLineEdit::textChanged, this, &ConfiguratorPane::eMp3ArtistTextChanged);
+    QObject::connect(ui->lLastFile, &QLabel::linkActivated, this, &ConfiguratorPane::recordingFileClicked);
+
+    QSizePolicy p = ui->gbOutputFile->sizePolicy();
+    p.setRetainSizeWhenHidden(true);
+    ui->gbOutputFile->setSizePolicy(p);
+    ui->gbOutputFile->setVisible(false);
 }
 
 ConfiguratorPane::~ConfiguratorPane()
@@ -118,6 +126,7 @@ void ConfiguratorPane::hookupCoordinator(Coordinator *c)
     QObject::connect(this, &ConfiguratorPane::volumeChanged, c, &Coordinator::setVolumeFactor);
     QObject::connect(this, &ConfiguratorPane::outputDirChanged, c, &Coordinator::setSaveDir);
     QObject::connect(this, &ConfiguratorPane::mp3ArtistChanged, c, &Coordinator::setMp3ArtistName);
+    QObject::connect(c, &Coordinator::recordingFileOpened, this, &ConfiguratorPane::recordingFileOpened);
 
     // initial sync
     cbRecordDevChanged();
@@ -163,6 +172,36 @@ void ConfiguratorPane::eMp3ArtistTextChanged()
 {
     QSettings().setValue("MP3 Artist", QVariant::fromValue(ui->eMp3Artist->text()));
     emit mp3ArtistChanged(ui->eMp3Artist->text());
+}
+
+void ConfiguratorPane::recordingFileOpened(const QString &file)
+{
+    ui->gbOutputFile->setVisible(true);
+    QString filename = QFileInfo(file).fileName();
+    ui->lLastFile->setText(QString("<a href=\"%2\">%1</a>").arg(filename)
+                           .arg(QUrl::fromLocalFile(file).toString(QUrl::FullyEncoded)));
+}
+
+void ConfiguratorPane::recordingFileClicked(const QString &url)
+{
+#if defined(Q_OS_WIN32)
+    QString filename = QDir::toNativeSeparators(QUrl(url).toLocalFile());
+    QProcess explorer;
+    explorer.setProgram("explorer.exe");
+    explorer.setNativeArguments(QString("/select,\"%1\"").arg(filename));
+    explorer.start();
+    explorer.waitForFinished();
+
+#elif defined(Q_OS_UNIX)
+    QProcess::execute("dbus-send", {
+        "--print-reply",
+        "--dest=org.freedesktop.FileManager1",
+        "/org/freedesktop/FileManager1",
+        "org.freedesktop.FileManager1.ShowItems",
+        QString("array:string:%1").arg(url),
+        "string:"
+    });
+#endif
 }
 
 } // namespace Recording

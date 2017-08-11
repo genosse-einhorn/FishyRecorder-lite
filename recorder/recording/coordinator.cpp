@@ -211,8 +211,8 @@ void Coordinator::startRecording()
     QString filename = QString(tr("Recording from %2.mp3"))
             .arg(QDateTime::currentDateTime().toString(tr("yyyy-MM-dd hhmmss")));
 
-    m_mp3FileStream = new QFile(makeFilenameUnique(
-        QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename))));
+    QString fullFilename = makeFilenameUnique(QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename)));
+    m_mp3FileStream = new QFile(fullFilename);
     if (!m_mp3FileStream->open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         error(tr("MP3: Could not open file %1: %2").arg(filename, m_mp3FileStream->errorString()));
@@ -232,6 +232,7 @@ void Coordinator::startRecording()
     }
 
     emit recordingChanged(isRecording());
+    emit recordingFileOpened(fullFilename);
 }
 
 void Coordinator::stopRecording()
