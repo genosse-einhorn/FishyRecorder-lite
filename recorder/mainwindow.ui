@@ -74,7 +74,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Monitor</string>
+         <string>&amp;Monitor [M]</string>
         </property>
         <property name="icon">
          <iconset theme="audio-headphones" resource="recorder.qrc">
@@ -107,7 +107,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>&amp;Stop</string>
+         <string>&amp;Stop [S]</string>
         </property>
         <property name="icon">
          <iconset theme="media-playback-stop" resource="recorder.qrc">
@@ -127,7 +127,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Record</string>
+         <string>&amp;Record [R]</string>
         </property>
         <property name="icon">
          <iconset theme="media-record" resource="recorder.qrc">
@@ -160,7 +160,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>&amp;Track</string>
+         <string>&amp;Track [T]</string>
         </property>
         <property name="icon">
          <iconset theme="media-playback-pause" resource="recorder.qrc">

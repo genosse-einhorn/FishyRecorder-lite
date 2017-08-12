@@ -4,24 +4,55 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="70"/>
-        <source>Stop</source>
-        <translation>Stop</translation>
+        <location filename="../mainwindow.ui" line="84"/>
+        <source>M</source>
+        <translation>M</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="87"/>
-        <source>Monitor</source>
-        <translation>Abhören</translation>
+        <location filename="../mainwindow.ui" line="117"/>
+        <source>S</source>
+        <translation>S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="107"/>
-        <source>Record</source>
-        <translation>Aufnahme</translation>
+        <location filename="../mainwindow.ui" line="137"/>
+        <source>R</source>
+        <translation>A</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="134"/>
-        <source>Track</source>
-        <translation>Track</translation>
+        <location filename="../mainwindow.ui" line="77"/>
+        <source>&amp;Monitor [M]</source>
+        <translation>Abhören [&amp;M]</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="110"/>
+        <source>&amp;Stop [S]</source>
+        <translation>&amp;Stop [S]</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="130"/>
+        <source>&amp;Record [R]</source>
+        <translation>&amp;Aufnehmen [A]</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="163"/>
+        <source>&amp;Track [T]</source>
+        <translation>&amp;Track [T]</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="170"/>
+        <source>T</source>
+        <translation>T</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="193"/>
+        <location filename="../mainwindow.cpp" line="67"/>
+        <source>About</source>
+        <translation>Über</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="67"/>
+        <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2017 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://libsound.io/&quot;&gt;libsoundio&lt;/a&gt; %%LIBSOUNDIO_VERSION%% (modified)&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
