@@ -60,3 +60,7 @@ RESOURCES += \
     recorder.qrc
 
 TRANSLATIONS += l10n/recorder_de.ts
+
+win32 {
+    RC_ICONS = img/fishy.ico
+}

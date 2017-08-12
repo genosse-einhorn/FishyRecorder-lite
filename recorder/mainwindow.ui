@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string notr="true">&lt;&gt;&lt; Recorder (Lite)</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="recorder.qrc">
+    <normaloff>:/img/img/fishy.svg</normaloff>:/img/img/fishy.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
