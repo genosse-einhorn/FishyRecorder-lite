@@ -74,11 +74,14 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Monitor</string>
+         <string>&amp;Monitor</string>
         </property>
         <property name="icon">
          <iconset theme="audio-headphones" resource="recorder.qrc">
           <normaloff>:/img/img/audio-headphones.svg</normaloff>:/img/img/audio-headphones.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>M</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -104,11 +107,14 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Stop</string>
+         <string>&amp;Stop</string>
         </property>
         <property name="icon">
          <iconset theme="media-playback-stop" resource="recorder.qrc">
           <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>S</string>
         </property>
        </widget>
       </item>
@@ -121,11 +127,14 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Record</string>
+         <string>&amp;Record</string>
         </property>
         <property name="icon">
          <iconset theme="media-record" resource="recorder.qrc">
           <normaloff>:/img/img/media-record.svg</normaloff>:/img/img/media-record.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>R</string>
         </property>
        </widget>
       </item>
@@ -151,11 +160,14 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Track</string>
+         <string>&amp;Track</string>
         </property>
         <property name="icon">
          <iconset theme="media-playback-pause" resource="recorder.qrc">
           <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>T</string>
         </property>
        </widget>
       </item>
