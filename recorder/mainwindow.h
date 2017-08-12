@@ -25,6 +25,7 @@ private:
     Recording::Coordinator *m_recorder;
 
     void recordingStateChanged(bool isRecording);
+    void showAboutDialog();
 };
 
 #endif // MAINWINDOW_H

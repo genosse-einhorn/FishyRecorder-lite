@@ -3,9 +3,13 @@
 
 #include "recording/coordinator.h"
 
+#include <soundio.h>
+#include <lame/lame.h>
+
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     windowPalette.setColor(QPalette::Background, statusPalette.color(QPalette::Background));
     this->setPalette(windowPalette);
 
+    QObject::connect(ui->bAbout, &QAbstractButton::clicked, this, &MainWindow::showAboutDialog);
 }
 
 MainWindow::~MainWindow()
@@ -55,4 +60,34 @@ void MainWindow::recordingStateChanged(bool isRecording)
     ui->bEnableRecord->setEnabled(!isRecording);
     ui->bNewTrack->setEnabled(isRecording);
     ui->bStop->setEnabled(isRecording);
+}
+
+void MainWindow::showAboutDialog()
+{
+    QMessageBox::about(this, tr("About"), tr(
+        "<h3>&lt;&gt;&lt; Recorder (Lite)</h3>"
+        "%%RECORDER_VERSION%%<br>"
+        "Copyright &copy; 2017 Jonas Kümmerlin &lt;jonas@kuemmerlin.eu&gt;"
+        "<p>"
+        "Running on <br>"
+        "<a href=\"https://www.qt.io/\">Qt</a> %%QT_VERSION%%<br>"
+        "<a href=\"http://libsound.io/\">libsoundio</a> %%LIBSOUNDIO_VERSION%% (modified)<br>"
+        "<a href=\"http://lame.sourceforge.net/\">LAME</a> %%LAME_VERSION%%<br>"
+        "<p>"
+        "This program is free software: you can redistribute it and/or modify "
+        "it under the terms of the GNU General Public License as published by "
+        "the Free Software Foundation, either version 2 of the License, or "
+        "(at your option) any later version. "
+        "<p>"
+        "This program is distributed in the hope that it will be useful, "
+        "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+        "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+        "GNU General Public License for more details."
+        "<p>"
+        "A copy of the GNU General Public License can be retrieved from "
+        "<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>."
+     ).replace("%%RECORDER_VERSION%%", GIT_REVNO)
+        .replace("%%QT_VERSION%%", qVersion())
+        .replace("%%LIBSOUNDIO_VERSION%%", soundio_version_string())
+        .replace("%%LAME_VERSION%%", get_lame_version()));
 }

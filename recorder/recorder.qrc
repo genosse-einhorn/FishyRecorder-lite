@@ -4,6 +4,7 @@
         <file>img/media-playback-pause.svg</file>
         <file>img/media-playback-stop.svg</file>
         <file>img/media-record.svg</file>
+        <file>img/help-browser.svg</file>
     </qresource>
     <qresource prefix="/l10n">
         <file alias="de.qm">l10n/recorder_de.qm</file>
