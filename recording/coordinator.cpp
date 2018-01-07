@@ -211,7 +211,7 @@ void Coordinator::startMonitorOutput()
 
 void Coordinator::processAudio()
 {
-    float buffer[2048];
+    float buffer[4096];
 
     for(;;)
     {
