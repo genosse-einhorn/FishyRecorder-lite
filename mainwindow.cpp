@@ -3,7 +3,6 @@
 
 #include "recording/coordinator.h"
 
-#include <soundio.h>
 #include <lame/lame.h>
 
 #include <QStandardPaths>
@@ -71,7 +70,6 @@ void MainWindow::showAboutDialog()
         "<p>"
         "Running on <br>"
         "<a href=\"https://www.qt.io/\">Qt</a> %%QT_VERSION%%<br>"
-        "<a href=\"http://libsound.io/\">libsoundio</a> %%LIBSOUNDIO_VERSION%% (modified)<br>"
         "<a href=\"http://lame.sourceforge.net/\">LAME</a> %%LAME_VERSION%%<br>"
         "<p>"
         "This program is free software: you can redistribute it and/or modify "
@@ -88,6 +86,5 @@ void MainWindow::showAboutDialog()
         "<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>."
      ).replace("%%RECORDER_VERSION%%", GIT_REVNO)
         .replace("%%QT_VERSION%%", qVersion())
-        .replace("%%LIBSOUNDIO_VERSION%%", soundio_version_string())
         .replace("%%LAME_VERSION%%", get_lame_version()));
 }

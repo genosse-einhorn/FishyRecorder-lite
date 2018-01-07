@@ -7,19 +7,7 @@
 #include <QProcess>
 #include <QDebug>
 
-#include <soundio.h>
-
 #include "coordinator.h"
-
-namespace {
-    QString getDeviceDesc(SoundIoDevice *dev)
-    {
-        if (dev->is_raw)
-            return QString("%1 [RAW]").arg(QString::fromUtf8(dev->name));
-        else
-            return QString("%1").arg(QString::fromUtf8(dev->name));
-    }
-}
 
 namespace Recording {
 
@@ -29,40 +17,19 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    SoundIo *soundio = soundio_create();
-    soundio_connect(soundio);
-    soundio_flush_events(soundio);
-
     QSettings settings;
 
-    ui->cbRecordDev->addItem(tr("<No Device>"), QVariant::fromValue(QString()));
-    ui->cbMonitorDev->addItem(tr("<No Device>"), QVariant::fromValue(QString()));
+    ui->cbRecordDev->addItem(tr("<Default Device>"), QVariant::fromValue(QString()));
+    ui->cbMonitorDev->addItem(tr("<Default Device>"), QVariant::fromValue(QString()));
 
-    int input_count = soundio_input_device_count(soundio);
-    int output_count = soundio_output_device_count(soundio);
-
-    for (int i = 0; i < input_count; ++i)
+    for (auto d : Coordinator::availableRecordingDevices())
     {
-        SoundIoDevice *device = soundio_get_input_device(soundio, i);
-
-        if (Coordinator::isSupportedInput(device))
-        {
-            ui->cbRecordDev->addItem(getDeviceDesc(device), Coordinator::uniqueDeviceId(device));
-        }
-
-        soundio_device_unref(device);
+        ui->cbRecordDev->addItem(d, d);
     }
 
-    for (int i = 0; i < output_count; ++i)
+    for (auto d : Coordinator::availableMonitorDevices())
     {
-        SoundIoDevice *device = soundio_get_output_device(soundio, i);
-
-        if (Coordinator::isSupportedOutput(device))
-        {
-            ui->cbMonitorDev->addItem(getDeviceDesc(device), Coordinator::uniqueDeviceId(device));
-        }
-
-        soundio_device_unref(device);
+        ui->cbMonitorDev->addItem(d, d);
     }
 
     auto i = ui->cbRecordDev->findData(settings.value("Recording Device", QVariant::fromValue(QString())));
@@ -98,8 +65,6 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
     if (!artist.size())
         artist = tr("Someone");
     ui->eMp3Artist->setText(artist);
-
-    soundio_destroy(soundio);
 
     QObject::connect(ui->cbMonitorDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbMonitorDevChanged);
     QObject::connect(ui->cbRecordDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbRecordDevChanged);

@@ -3,23 +3,15 @@
 
 #include <QObject>
 
-#include <atomic>
-#include <memory>
-
 class QIODevice;
 class QTimer;
 class QFile;
-
-struct SoundIo;
-struct SoundIoDevice;
-struct SoundIoInStream;
-struct SoundIoOutStream;
-struct SoundIoRingBuffer;
 
 namespace Recording {
 
 class LameEncoderStream;
 class LevelCalculator;
+class Backend;
 
 class Coordinator : public QObject
 {
@@ -35,12 +27,8 @@ public:
     QString monitorDevice() const { return m_monitorDevId; }
     bool monitorEnabled() const { return m_monitorEnabled; }
 
-    static bool isSupportedInput(SoundIoDevice *dev);
-    static bool isSupportedOutput(SoundIoDevice *dev);
-
-    // A string which identifies a device uniquely, unlike SoundIoDevice::id
-    // The same device will get different ids for input, output and raw modes
-    static QString uniqueDeviceId(SoundIoDevice *dev);
+    static QStringList availableRecordingDevices();
+    static QStringList availableMonitorDevices();
 
     bool isRecording() const { return m_mp3Stream != nullptr; }
     qint64 samplesRecorded() const { return m_samplesSaved; }
@@ -86,11 +74,6 @@ public slots:
     void setMp3ArtistName(const QString &name);
 
 private:
-    static void read_callback(struct SoundIoInStream *instream, int frame_count_min, int frame_count_max);
-    static void write_callback(struct SoundIoOutStream *outstream, int frame_count_min, int frame_count_max);
-    static void error_callback_in(struct SoundIoInStream *instream, int err);
-    static void error_callback_out(struct SoundIoOutStream *outstream, int err);
-
     void stopAudioInput();
     void startAudioInput();
     void stopMonitorOutput();
@@ -99,7 +82,7 @@ private:
     void processAudio();
 
 private:
-    SoundIo *m_soundio { nullptr };
+    Recording::Backend *m_backend;
 
     Recording::LevelCalculator *m_levelCalculator;
 
@@ -109,21 +92,14 @@ private:
     QString m_recordingDevId;
     QString m_monitorDevId;
 
-    std::atomic<float> m_volumeFactor { 1.0f };
-
-    std::atomic_bool m_monitorEnabled { false };
+    float m_volumeFactor { 1.0f };
+    bool m_monitorEnabled { false };
 
     qint64 m_samplesSaved { 0 };
 
     QString m_saveDir;
     QString m_filename;
     QString m_mp3ArtistName { "Someone" };
-
-    SoundIoInStream *m_audioInStream { nullptr };
-    SoundIoOutStream *m_audioOutStream { nullptr };
-
-    SoundIoRingBuffer *m_recordRingBuffer { nullptr };
-    SoundIoRingBuffer *m_monitorRingBuffer { nullptr };
 };
 
 } // namespace Recording
