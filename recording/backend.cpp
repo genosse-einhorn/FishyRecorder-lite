@@ -2,9 +2,30 @@
 
 #include <cmath>
 
-static QString strAlError(ALenum err)
+static QString getAlErrorStr()
 {
-    return QString("OpenAL Error 0x%1: %2").arg(qint64(err), 8, 16, QChar('0')).arg(QString::fromUtf8(alGetString(err)));
+    ALenum err = alGetError();
+    if (err == AL_NO_ERROR)
+        return QString();
+
+    const char *errstr = alGetString(err);
+    if (errstr)
+        return QString("OpenAL Error 0x%1: %2").arg(qint64(err), 8, 16, QChar('0')).arg(errstr);
+
+    return QString("Unknown OpenAL Error 0x%1").arg(qint64(err), 8, 16, QChar('0'));
+}
+
+static QString getAlcErrorStr(ALCdevice *dev)
+{
+    ALenum err = alcGetError(dev);
+    if (err == AL_NO_ERROR)
+        return QString();
+
+    const char *errstr = alcGetString(dev, err);
+    if (errstr)
+        return QString("OpenAL Error 0x%1: %2").arg(qint64(err), 8, 16, QChar('0')).arg(errstr);
+
+    return QString("Unknown OpenAL Error 0x%1").arg(qint64(err), 8, 16, QChar('0'));
 }
 
 namespace Recording {
@@ -33,15 +54,12 @@ qint64 Backend::retrieveRecordedSamples(float *buffer, qint64 numSamples)
 
     alcGetError(m_recordDevice);
     alcCaptureSamples(m_recordDevice, buffer, ALCsizei(numSamples));
-    auto err = alcGetError(m_recordDevice);
-    if (err != AL_NO_ERROR)
+    auto err = getAlcErrorStr(m_recordDevice);
+    if (err.size())
     {
-        emit error(strAlError(err));
+        emit error(QString("alcCaptureSamples: %1").arg(err));
         return 0;
     }
-
-    if (numSamples > 0)
-        emit error(QString());
 
     return numSamples;
 }
@@ -53,10 +71,10 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
 
     alcGetError(m_playbackDevice);
     alcMakeContextCurrent(m_playbackContext);
-    auto err = alcGetError(m_playbackDevice);
-    if (err != AL_NO_ERROR)
+    auto err = getAlcErrorStr(m_playbackDevice);
+    if (err.size())
     {
-        emit error(QString("alcMakeContextCurrent: %1").arg(strAlError(err)));
+        emit error(QString("alcMakeContextCurrent: %1").arg(err));
         return;
     }
 
@@ -82,20 +100,20 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
 
     ALuint buf = m_availableBuffers.front();
 
-    err = alcGetError(m_playbackDevice);
+    alGetError();
     alBufferData(buf, AL_FORMAT_STEREO_FLOAT32, buffer, numSamples*sizeof(float)*2, SAMPLE_RATE);
-    err = alcGetError(m_playbackDevice);
-    if (err != AL_NO_ERROR)
+    err = getAlErrorStr();
+    if (err.size())
     {
-        emit error(tr("While filling playback buffer: %1").arg(strAlError(err)));
+        emit error(QString("alBufferData: %1").arg(err));
         return;
     }
 
     alSourceQueueBuffers(m_playbackSource, 1, &buf);
-    err = alcGetError(m_playbackDevice);
-    if (err != AL_NO_ERROR)
+    err = getAlErrorStr();
+    if (err.size())
     {
-        emit error(tr("Queueing playback buffer: %1").arg(strAlError(err)));
+        emit error(QString("alSourceQueueBuffers: %1").arg(err));
         return;
     }
 
@@ -106,10 +124,14 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
     alGetSourcei(m_playbackSource, AL_SOURCE_STATE, &state);
     if (state != AL_PLAYING)
     {
+        alGetError();
         alSourcePlay(m_playbackSource);
+        err = getAlErrorStr();
+        if (err.size())
+        {
+            emit error(QString("alSourcePlay: %1").arg(err));
+        }
     }
-
-    emit error(QString());
 }
 
 void Backend::openRecordDevice(const QString &device)
@@ -125,17 +147,22 @@ void Backend::openRecordDevice(const QString &device)
                                           SAMPLE_RATE*sizeof(float));
     if (!m_recordDevice)
     {
-        emit error(tr("While opening capture device: %1").arg(strAlError(alGetError())));
+        emit error(QString("alcCaptureOpenDevice: %1").arg(getAlcErrorStr(nullptr)));
         return;
     }
 
-    auto err = alcGetError(m_recordDevice);
+    alcGetError(m_recordDevice);
     alcCaptureStart(m_recordDevice);
-    err = alcGetError(m_recordDevice);
-    if (err != AL_NO_ERROR)
-        emit error(tr("While starting capture: %1").arg(strAlError(err)));
+    auto err = getAlcErrorStr(m_recordDevice);
+    if (err.size())
+    {
+        emit error(QString("alcCaptureStart: %1").arg(err));
+        closeRecordDevice();
+        return;
+    }
 
-    emit error(QString());
+    if (m_playbackContext)
+        emit error(QString());
 }
 
 void Backend::openPlaybackDevice(const QString &device)
@@ -145,14 +172,14 @@ void Backend::openPlaybackDevice(const QString &device)
     m_playbackDevice = alcOpenDevice(device.size() > 0 ? device.toUtf8().data() : nullptr);
     if (!m_playbackDevice)
     {
-        emit error(tr("While opening playback device: %1").arg(strAlError(alGetError())));
+        emit error(QString("alcOpenDevice: %1").arg(getAlcErrorStr(nullptr)));
         return;
     }
 
     m_playbackContext = alcCreateContext(m_playbackDevice, nullptr);
     if (!m_playbackContext)
     {
-        emit error(tr("While creating playback context: %1").arg(strAlError(alcGetError(m_playbackDevice))));
+        emit error(QString("alcCreateContext: %1").arg(getAlcErrorStr(m_playbackDevice)));
         closePlaybackDevice();
         return;
     }
@@ -160,10 +187,10 @@ void Backend::openPlaybackDevice(const QString &device)
     alcMakeContextCurrent(m_playbackContext);
     alGetError();
     alGenSources(1, &m_playbackSource);
-    auto err = alGetError();
-    if (err != AL_NO_ERROR)
+    auto err = getAlErrorStr();
+    if (err.size())
     {
-        emit error(tr("While creating playback source: %1").arg(strAlError(err)));
+        emit error(QString("alGenSources: %1").arg(err));
         closePlaybackDevice();
         return;
     }
@@ -173,11 +200,11 @@ void Backend::openPlaybackDevice(const QString &device)
         m_registeredBuffers.resize(NUM_PLAYBACK_BUFFERS);
         alGetError();
         alGenBuffers(NUM_PLAYBACK_BUFFERS, &m_registeredBuffers[0]);
-        auto err = alGetError();
-        if (err != AL_NO_ERROR)
+        err = getAlErrorStr();
+        if (err.size())
         {
             m_registeredBuffers.resize(0);
-            emit error(tr("While creating playback buffers: %1").arg(strAlError(err)));
+            emit error(QString("alGenBuffers: %1").arg(err));
             closePlaybackDevice();
             return;
         }
@@ -188,7 +215,8 @@ void Backend::openPlaybackDevice(const QString &device)
         }
     }
 
-    emit error(QString());
+    if (m_recordDevice)
+        emit error(QString());
 }
 
 void Backend::closeRecordDevice()
