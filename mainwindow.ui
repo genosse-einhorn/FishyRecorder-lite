@@ -60,89 +60,148 @@
       </property>
      </spacer>
     </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="bEnableMonitor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&amp;Monitor [M]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="audio-headphones" resource="recorder.qrc">
+          <normaloff>:/img/img/audio-headphones.svg</normaloff>:/img/img/audio-headphones.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>M</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="bStop">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>&amp;Stop [S]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-stop" resource="recorder.qrc">
+          <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>S</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="bEnableRecord">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&amp;Record [R]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-record" resource="recorder.qrc">
+          <normaloff>:/img/img/media-record.svg</normaloff>:/img/img/media-record.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="bNewTrack">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>&amp;Track [T]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-pause" resource="recorder.qrc">
+          <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>T</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="7">
+       <widget class="QPushButton" name="bAbout">
+        <property name="text">
+         <string>About</string>
+        </property>
+        <property name="icon">
+         <iconset theme="help-about" resource="recorder.qrc">
+          <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
-  <action name="actionAbout">
-   <property name="icon">
-    <iconset theme="help-about" resource="recorder.qrc">
-     <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
-   </property>
-   <property name="text">
-    <string>About</string>
-   </property>
-   <property name="toolTip">
-    <string>Show &quot;About&quot; Dialog</string>
-   </property>
-  </action>
-  <action name="actionRecord">
-   <property name="icon">
-    <iconset theme="media-record" resource="recorder.qrc">
-     <normaloff>:/img/img/media-record.svg</normaloff>:/img/img/media-record.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Record [R]</string>
-   </property>
-   <property name="toolTip">
-    <string>Start recording to MP3</string>
-   </property>
-   <property name="shortcut">
-    <string>R</string>
-   </property>
-  </action>
-  <action name="actionStop">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="media-playback-stop" resource="recorder.qrc">
-     <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Stop [S]</string>
-   </property>
-   <property name="toolTip">
-    <string>Stop recording to MP3</string>
-   </property>
-   <property name="shortcut">
-    <string>S</string>
-   </property>
-  </action>
-  <action name="actionTrack">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="media-playback-pause" resource="recorder.qrc">
-     <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Track [T]</string>
-   </property>
-   <property name="toolTip">
-    <string>Switch to a new MP3 file</string>
-   </property>
-   <property name="shortcut">
-    <string>T</string>
-   </property>
-  </action>
-  <action name="actionMonitor">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="audio-headphones" resource="recorder.qrc">
-     <normaloff>:/img/img/audio-headphones.svg</normaloff>:/img/img/audio-headphones.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Monitor [M]</string>
-   </property>
-   <property name="toolTip">
-    <string>Monitor audio input</string>
-   </property>
-   <property name="shortcut">
-    <string>M</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
