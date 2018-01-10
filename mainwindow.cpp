@@ -9,6 +9,8 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QToolBar>
+#include <QMenu>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->configPane->hookupCoordinator(m_recorder);
 
-    for (QWidget *w: this->findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly))
+    for (QWidget *w: this->centralWidget()->findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly))
     {
         QPalette p = w->palette();
         p.setColor(QPalette::Background, this->palette().color(QPalette::Background));
@@ -44,9 +46,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusView->setPalette(statusPalette);
     QPalette windowPalette = this->palette();
     windowPalette.setColor(QPalette::Background, statusPalette.color(QPalette::Background));
-    this->setPalette(windowPalette);
+    this->centralWidget()->setPalette(windowPalette);
 
-    QObject::connect(ui->bAbout, &QAbstractButton::clicked, this, &MainWindow::showAboutDialog);
+    QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAboutDialog);
+
+    // Move buttons into a toolbar and create "Help" menu
+    QToolBar *tb = new QToolBar(this);
+    tb->setMovable(false);
+    tb->addWidget(ui->bEnableRecord);
+    tb->addWidget(ui->bStop);
+    tb->addSeparator();
+    tb->addWidget(ui->bNewTrack);
+    tb->addSeparator();
+    tb->addWidget(ui->bEnableMonitor);
+    QWidget *spacer = new QWidget(this);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    tb->addWidget(spacer);
+    QMenu *helpMenu = new QMenu(this);
+    helpMenu->addAction(ui->actionAbout);
+    ui->bHelp->setMenu(helpMenu);
+    ui->bHelp->setStyleSheet("*:menu-indicator { image: none; }");
+    tb->addWidget(ui->bHelp);
+    this->addToolBar(Qt::BottomToolBarArea, tb);
+    delete ui->buttonContainer;
+    ui->buttonContainer = nullptr;
 }
 
 MainWindow::~MainWindow()

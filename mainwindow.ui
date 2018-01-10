@@ -18,6 +18,9 @@
     <normaloff>:/img/img/fishy.svg</normaloff>:/img/img/fishy.svg</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="Recording::StatusView" name="statusView" native="true">
@@ -61,12 +64,52 @@
      </spacer>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="buttonContainer">
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="5">
-       <widget class="QPushButton" name="bEnableMonitor">
+      <item row="0" column="2">
+       <widget class="QToolButton" name="bNewTrack">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>&amp;Track [T]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-pause" resource="recorder.qrc">
+          <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>T</string>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QToolButton" name="bStop">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>&amp;Stop [S]</string>
+        </property>
+        <property name="icon">
+         <iconset theme="media-playback-stop" resource="recorder.qrc">
+          <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
+        </property>
+        <property name="shortcut">
+         <string>S</string>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QToolButton" name="bEnableMonitor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -86,40 +129,13 @@
         <property name="checkable">
          <bool>true</bool>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="bStop">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>&amp;Stop [S]</string>
-        </property>
-        <property name="icon">
-         <iconset theme="media-playback-stop" resource="recorder.qrc">
-          <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
-        </property>
-        <property name="shortcut">
-         <string>S</string>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="bEnableRecord">
+       <widget class="QToolButton" name="bEnableRecord">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -136,65 +152,25 @@
         <property name="shortcut">
          <string>R</string>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item row="0" column="4">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="bNewTrack">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QToolButton" name="bHelp">
         <property name="text">
-         <string>&amp;Track [T]</string>
+         <string>Help ▼</string>
         </property>
         <property name="icon">
-         <iconset theme="media-playback-pause" resource="recorder.qrc">
-          <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
-        </property>
-        <property name="shortcut">
-         <string>T</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="7">
-       <widget class="QPushButton" name="bAbout">
-        <property name="text">
-         <string>About</string>
-        </property>
-        <property name="icon">
-         <iconset theme="help-about" resource="recorder.qrc">
+         <iconset theme="help-browser" resource="recorder.qrc">
           <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
@@ -202,6 +178,15 @@
     </item>
    </layout>
   </widget>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="help-about" resource="recorder.qrc">
+     <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
