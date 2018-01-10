@@ -29,6 +29,7 @@ public:
 
     static QStringList availableRecordingDevices();
     static QStringList availableMonitorDevices();
+    static QString backendDebugInfo();
 
     bool isRecording() const { return m_mp3Stream != nullptr; }
     qint64 samplesRecorded() const { return m_samplesSaved; }

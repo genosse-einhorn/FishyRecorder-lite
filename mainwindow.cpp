@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->centralWidget()->setPalette(windowPalette);
 
     QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAboutDialog);
+    QObject::connect(ui->actionAudioDebugInfo, &QAction::triggered, this, &MainWindow::showAlDebugDialog);
 
     // Move buttons into a toolbar and create "Help" menu
     QToolBar *tb = new QToolBar(this);
@@ -63,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     tb->addWidget(spacer);
     QMenu *helpMenu = new QMenu(this);
+    helpMenu->addAction(ui->actionAudioDebugInfo);
     helpMenu->addAction(ui->actionAbout);
     ui->bHelp->setMenu(helpMenu);
     ui->bHelp->setStyleSheet("*:menu-indicator { image: none; }");
@@ -110,4 +112,9 @@ void MainWindow::showAboutDialog()
      ).replace("%%RECORDER_VERSION%%", GIT_REVNO)
         .replace("%%QT_VERSION%%", qVersion())
         .replace("%%LAME_VERSION%%", get_lame_version()));
+}
+
+void MainWindow::showAlDebugDialog()
+{
+    QMessageBox::information(this, tr("Audio debug indo"), Recording::Coordinator::backendDebugInfo());
 }

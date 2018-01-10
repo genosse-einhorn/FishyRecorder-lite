@@ -62,6 +62,11 @@ QStringList Coordinator::availableMonitorDevices()
     return Backend::availablePlaybackDevices();
 }
 
+QString Coordinator::backendDebugInfo()
+{
+    return Backend::debugInfo();
+}
+
 void Coordinator::setRecordingDevice(const QString &deviceId)
 {
     stopAudioInput();

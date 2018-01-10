@@ -26,6 +26,7 @@ private:
 
     void recordingStateChanged(bool isRecording);
     void showAboutDialog();
+    void showAlDebugDialog();
 };
 
 #endif // MAINWINDOW_H

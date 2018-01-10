@@ -281,4 +281,69 @@ QStringList Backend::availablePlaybackDevices()
     return retval;
 }
 
+QString Backend::debugInfo()
+{
+    QStringList info;
+
+    info << QString("Available playback devices: %1").arg(availablePlaybackDevices().join(", "));
+    info << QString("Available capture devices: %1").arg(availableRecordingDevices().join(", "));
+    info << QString();
+    info << QString("*** default device info ***");
+    ALCint major, minor;
+    ALCdevice *device = alcOpenDevice(nullptr);
+    if (!device)
+        info << QString("ERROR while opening default device: %1").arg(getAlcErrorStr(nullptr));
+
+    const char *devname = alcGetString(device, ALC_DEVICE_SPECIFIER);
+    if (devname)
+        info << QString("Default Device: %1").arg(QString::fromUtf8(devname));
+    else
+        info << QString("ERROR while retrieving default device name: %1").arg(getAlcErrorStr(device));
+
+    alcGetIntegerv(device, ALC_MAJOR_VERSION, 1, &major);
+    alcGetIntegerv(device, ALC_MINOR_VERSION, 1, &minor);
+    QString err = getAlcErrorStr(device);
+    if (!err.size())
+        info << QString("ALC version: %1.%2").arg(major).arg(minor);
+
+    const char *alcExtensions = alcGetString(device, ALC_EXTENSIONS);
+    if (alcExtensions)
+    {
+        QString extList = QString("ALC Extensions:");
+        for (const char *e = alcExtensions; *e; e += strlen(e)+1)
+        {
+            extList = QString("%1 %2").arg(extList).arg(QString::fromUtf8(e));
+        }
+        info << extList;
+    }
+
+    ALCcontext *context = alcCreateContext(device, nullptr);
+    if (!context)
+        info << QString("ERROR while creating context: %1").arg(getAlcErrorStr(device));
+
+    if (alcMakeContextCurrent(context) == ALC_FALSE)
+        info << QString("ERROR while setting current context: %1").arg(getAlcErrorStr(device));
+
+    info << QString("AL vendor: %1").arg(QString::fromUtf8(alGetString(AL_VENDOR)));
+    info << QString("AL renderer: %1").arg(QString::fromUtf8(alGetString(AL_RENDERER)));
+    info << QString("AL version: %1").arg(QString::fromUtf8(alGetString(AL_VERSION)));
+
+    const char *alExtensions = alGetString(AL_EXTENSIONS);
+    if (alExtensions)
+    {
+        QString extList = QString("AL extensions:");
+        for (const char *e = alExtensions; *e; e += strlen(e)+1)
+        {
+            extList = QString("%1 %2").arg(extList).arg(QString::fromUtf8(e));
+        }
+        info << extList;
+    }
+
+    alcMakeContextCurrent(nullptr);
+    alcDestroyContext(context);
+    alcCloseDevice(device);
+
+    return info.join("\n");
+}
+
 } // namespace Recording

@@ -187,6 +187,11 @@
     <string>About</string>
    </property>
   </action>
+  <action name="actionAudioDebugInfo">
+   <property name="text">
+    <string>Show OpenAL debugging info</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

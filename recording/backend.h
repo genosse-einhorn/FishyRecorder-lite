@@ -32,6 +32,7 @@ public:
 
     static QStringList availableRecordingDevices();
     static QStringList availablePlaybackDevices();
+    static QString debugInfo();
 
 signals:
     void error(const QString &msg);
