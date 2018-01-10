@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QToolBar>
 #include <QMenu>
+#include <QThread>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,7 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_recorder = new Recording::Coordinator(this);
+    m_recorderThread = new QThread(this);
+    m_recorder = new Recording::Coordinator();
+    m_recorder->moveToThread(m_recorderThread);
+    connect(m_recorderThread, &QThread::finished, m_recorder, &QObject::deleteLater);
+    m_recorderThread->start();
+
     QObject::connect(m_recorder, &Recording::Coordinator::statusUpdate, ui->statusView, &Recording::StatusView::handleStatusUpdate);
     QObject::connect(m_recorder, &Recording::Coordinator::error, ui->errorWidget, &Recording::ErrorWidget::displayError);
 
@@ -77,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    m_recorderThread->quit();
+    m_recorderThread->wait();
 }
 
 void MainWindow::recordingStateChanged(bool isRecording)
