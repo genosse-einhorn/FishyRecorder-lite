@@ -6,7 +6,7 @@
 
 QT       += core gui widgets svg
 
-CONFIG   += c++14 console link_pkgconfig
+CONFIG   += c++14 link_pkgconfig
 
 TARGET = KuemmelRecorder-Lite
 TEMPLATE = app
