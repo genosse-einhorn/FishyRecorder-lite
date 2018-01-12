@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Move buttons into a toolbar and create "Help" menu
     QToolBar *tb = new QToolBar(this);
     tb->setMovable(false);
+    tb->toggleViewAction()->setEnabled(false);
     tb->addWidget(ui->bEnableRecord);
     tb->addWidget(ui->bStop);
     tb->addSeparator();
