@@ -4,72 +4,95 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="84"/>
+        <location filename="../mainwindow.ui" line="127"/>
         <source>M</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="117"/>
+        <location filename="../mainwindow.ui" line="104"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="137"/>
+        <location filename="../mainwindow.ui" line="153"/>
         <source>R</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="77"/>
+        <location filename="../mainwindow.ui" line="120"/>
         <source>&amp;Monitor [M]</source>
         <translation>Abhören [&amp;M]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="110"/>
+        <location filename="../mainwindow.ui" line="97"/>
         <source>&amp;Stop [S]</source>
         <translation>&amp;Stop [S]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="130"/>
+        <location filename="../mainwindow.ui" line="146"/>
         <source>&amp;Record [R]</source>
         <translation>&amp;Aufnehmen [A]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="163"/>
+        <location filename="../mainwindow.ui" line="77"/>
         <source>&amp;Track [T]</source>
         <translation>&amp;Track [T]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="170"/>
+        <location filename="../mainwindow.ui" line="84"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="193"/>
-        <location filename="../mainwindow.cpp" line="67"/>
-        <source>About</source>
-        <translation>Über</translation>
+        <location filename="../mainwindow.ui" line="163"/>
+        <source>Help ▼</source>
+        <translation>Hilfe ▼</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="67"/>
-        <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2017 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://libsound.io/&quot;&gt;libsoundio&lt;/a&gt; %%LIBSOUNDIO_VERSION%% (modified)&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
+        <location filename="../mainwindow.ui" line="187"/>
+        <location filename="../mainwindow.cpp" line="100"/>
+        <source>About</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="192"/>
+        <source>OpenAL debug info...</source>
+        <translation>OpenAL Debug-Informationen...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="100"/>
+        <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2018 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="128"/>
+        <source>OpenAL debug information</source>
+        <translation>OpenAL Debug-Informationen</translation>
+    </message>
+</context>
+<context>
+    <name>Recording::Backend</name>
+    <message>
+        <location filename="../recording/backend.cpp" line="97"/>
+        <source>Buffer overflow! Cannot play back any more audio.</source>
+        <translation>Pufferüberlauf! Audioausgabe unterbrochen.</translation>
     </message>
 </context>
 <context>
     <name>Recording::ConfiguratorPane</name>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="38"/>
-        <location filename="../recording/configuratorpane.cpp" line="39"/>
-        <source>&lt;No Device&gt;</source>
-        <translation>&lt;Kein Gerät&gt;</translation>
+        <location filename="../recording/configuratorpane.cpp" line="22"/>
+        <location filename="../recording/configuratorpane.cpp" line="23"/>
+        <source>&lt;Default Device&gt;</source>
+        <translation>&lt;Standardgerät&gt;</translation>
     </message>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="99"/>
+        <location filename="../recording/configuratorpane.cpp" line="66"/>
         <source>Someone</source>
         <translation>Jemand</translation>
     </message>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="153"/>
+        <location filename="../recording/configuratorpane.cpp" line="118"/>
         <source>Select Directory</source>
         <translation>Verzeichnis auswählen</translation>
     </message>
@@ -77,22 +100,17 @@
 <context>
     <name>Recording::Coordinator</name>
     <message>
-        <location filename="../recording/coordinator.cpp" line="202"/>
-        <source>You can&apos;t start recoding until your audio input works</source>
-        <translation>Die Aufnahme ist erst möglich wenn der Audio-Eingang funktioniert</translation>
-    </message>
-    <message>
-        <location filename="../recording/coordinator.cpp" line="207"/>
+        <location filename="../recording/coordinator.cpp" line="110"/>
         <source>Recording from %2.mp3</source>
         <translation>Aufnahme vom %2.mp3</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="214"/>
+        <location filename="../recording/coordinator.cpp" line="117"/>
         <source>MP3: Could not open file %1: %2</source>
         <translation>MP3: Konnte Datei %1 nicht öffnen: %2</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="219"/>
+        <location filename="../recording/coordinator.cpp" line="122"/>
         <source>Recording from %1</source>
         <translation>Aufnahme vom %1</translation>
     </message>

@@ -189,7 +189,7 @@
   </action>
   <action name="actionAudioDebugInfo">
    <property name="text">
-    <string>Show OpenAL debugging info</string>
+    <string>OpenAL debug info...</string>
    </property>
   </action>
  </widget>
