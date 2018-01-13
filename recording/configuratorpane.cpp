@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QDebug>
+#include <cmath>
 
 #include "coordinator.h"
 
@@ -110,7 +111,8 @@ void ConfiguratorPane::slVolumeChanged()
 {
     QSettings().setValue("Volume", QVariant::fromValue(ui->slVolume->value()));
     double val = double(ui->slVolume->value()) / 100000000.0;
-    emit volumeChanged(val);
+    double valQuad = std::pow(val, 4.0);
+    emit volumeChanged(valQuad);
 }
 
 void ConfiguratorPane::outputDirButtonClick()

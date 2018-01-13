@@ -81,14 +81,14 @@
           <item>
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>0%</string>
+             <string>-∞dB</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>50%</string>
+             <string>-24dB</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -98,7 +98,7 @@
           <item>
            <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>100%</string>
+             <string>±0dB</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -108,7 +108,7 @@
           <item>
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>150%</string>
+             <string>+14dB</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -118,7 +118,7 @@
           <item>
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>200%</string>
+             <string>+24dB</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
