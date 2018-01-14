@@ -308,14 +308,9 @@ QString Backend::debugInfo()
 
     const char *alcExtensions = alcGetString(device, ALC_EXTENSIONS);
     if (alcExtensions)
-    {
-        QString extList = QString("ALC Extensions:");
-        for (const char *e = alcExtensions; *e; e += strlen(e)+1)
-        {
-            extList = QString("%1 %2").arg(extList).arg(QString::fromUtf8(e));
-        }
-        info << extList;
-    }
+        info << QString("ALC Extensions: %1").arg(QString::fromUtf8(alcExtensions));
+    else
+        info << QString("ERROR while retrieving ALC extensions: %1").arg(getAlcErrorStr(device));
 
     ALCcontext *context = alcCreateContext(device, nullptr);
     if (!context)
@@ -330,14 +325,9 @@ QString Backend::debugInfo()
 
     const char *alExtensions = alGetString(AL_EXTENSIONS);
     if (alExtensions)
-    {
-        QString extList = QString("AL extensions:");
-        for (const char *e = alExtensions; *e; e += strlen(e)+1)
-        {
-            extList = QString("%1 %2").arg(extList).arg(QString::fromUtf8(e));
-        }
-        info << extList;
-    }
+        info << QString("AL extensions: %1").arg(QString::fromUtf8(alExtensions));
+    else
+        info << QString("ERROR while retrieving AL extensions: %1").arg(getAlErrorStr());
 
     alcMakeContextCurrent(nullptr);
     alcDestroyContext(context);
