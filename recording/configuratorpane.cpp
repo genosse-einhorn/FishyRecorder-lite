@@ -67,11 +67,17 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
         artist = tr("Someone");
     ui->eMp3Artist->setText(artist);
 
+    ui->cbFileFormat->addItem(tr("MP3 (192kbit/s"), "mp3");
+    ui->cbFileFormat->addItem(tr("FLAC (lossless)"), "flac");
+    ui->cbFileFormat->setCurrentIndex(ui->cbFileFormat->findData(
+        settings.value("File Format", "mp3")));
+
     QObject::connect(ui->cbMonitorDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbMonitorDevChanged);
     QObject::connect(ui->cbRecordDev, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbRecordDevChanged);
     QObject::connect(ui->slVolume, &QSlider::valueChanged, this, &ConfiguratorPane::slVolumeChanged);
     QObject::connect(ui->bPicker, &QAbstractButton::clicked, this, &ConfiguratorPane::outputDirButtonClick);
     QObject::connect(ui->eMp3Artist, &QLineEdit::textChanged, this, &ConfiguratorPane::eMp3ArtistTextChanged);
+    QObject::connect(ui->cbFileFormat, &QComboBox::currentTextChanged, this, &ConfiguratorPane::cbFileFormatChanged);
 }
 
 ConfiguratorPane::~ConfiguratorPane()
@@ -86,12 +92,14 @@ void ConfiguratorPane::hookupCoordinator(Coordinator *c)
     QObject::connect(this, &ConfiguratorPane::volumeChanged, c, &Coordinator::setVolumeFactor);
     QObject::connect(this, &ConfiguratorPane::outputDirChanged, c, &Coordinator::setSaveDir);
     QObject::connect(this, &ConfiguratorPane::mp3ArtistChanged, c, &Coordinator::setMp3ArtistName);
+    QObject::connect(this, &ConfiguratorPane::fileFormatChanged, c, &Coordinator::setFileType);
 
     // initial sync
     cbRecordDevChanged();
     cbMonitorDevChanged();
     slVolumeChanged();
     eMp3ArtistTextChanged();
+    cbFileFormatChanged();
     emit outputDirChanged(ui->eDirectory->text());
 }
 
@@ -105,6 +113,12 @@ void ConfiguratorPane::cbMonitorDevChanged()
 {
     QSettings().setValue("Monitor Device", ui->cbMonitorDev->currentData());
     emit monitorDevChanged(ui->cbMonitorDev->currentData().toString());
+}
+
+void ConfiguratorPane::cbFileFormatChanged()
+{
+    QSettings().setValue("File Format", ui->cbFileFormat->currentData());
+    emit fileFormatChanged(ui->cbFileFormat->currentData().toString());
 }
 
 void ConfiguratorPane::slVolumeChanged()

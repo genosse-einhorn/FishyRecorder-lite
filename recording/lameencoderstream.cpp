@@ -7,19 +7,19 @@
 
 namespace Recording {
 
-LameEncoderStream::LameEncoderStream(QObject *parent)
-: QObject(parent), m_lame_gbf(lame_init()), m_device(nullptr)
-{}
-
-bool
-LameEncoderStream::init(const QString &artist, const QString &trackName,
-                        int brate, int samplerate, QIODevice *output)
+LameEncoderStream::LameEncoderStream(int brate, QObject *parent)
+: AbstractEncoderStream(parent), m_lame_gbf(lame_init()), m_device(nullptr)
 {
-    m_device = output;
-
     lame_set_quality(m_lame_gbf, 5);
     lame_set_mode(m_lame_gbf, JOINT_STEREO);
     lame_set_brate(m_lame_gbf, brate);
+}
+
+bool
+LameEncoderStream::init(const QString &artist, const QString &trackName, int samplerate, QIODevice *output)
+{
+    m_device = output;
+
     lame_set_in_samplerate(m_lame_gbf, samplerate);
     lame_set_out_samplerate(m_lame_gbf, samplerate);
 

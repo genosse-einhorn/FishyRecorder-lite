@@ -9,7 +9,7 @@ class QFile;
 
 namespace Recording {
 
-class LameEncoderStream;
+class AbstractEncoderStream;
 class LevelCalculator;
 class Backend;
 
@@ -31,13 +31,14 @@ public:
     static QStringList availableMonitorDevices();
     static QString backendDebugInfo();
 
-    bool isRecording() const { return m_mp3Stream != nullptr; }
+    bool isRecording() const { return m_encoderStream != nullptr; }
     qint64 samplesRecorded() const { return m_samplesSaved; }
 
     float volumeFactor() const { return m_volumeFactor; }
 
     QString saveDir() const { return m_saveDir; }
     QString fileName() const { return m_filename; }
+    QString fileType() const { return m_filetype; }
     QString mp3ArtistName() const { return m_mp3ArtistName; }
 
 signals:
@@ -50,6 +51,7 @@ signals:
     void volumeFactorChanged(float);
 
     void saveDirChanged(const QString &dir);
+    void fileTypeChanged(const QString &type);
     void mp3ArtistNameChanged(const QString &name);
 
     void statusUpdate(float levelL, float levelR, bool isRecording, qint64 recordedSamples);
@@ -72,6 +74,7 @@ public slots:
     void handleLevelUpdate(float levelL, float levelR);
 
     void setSaveDir(const QString &dir);
+    void setFileType(const QString &fileType);
     void setMp3ArtistName(const QString &name);
 
 private:
@@ -87,8 +90,8 @@ private:
 
     Recording::LevelCalculator *m_levelCalculator;
 
-    QIODevice *m_mp3FileStream { nullptr };
-    Recording::LameEncoderStream *m_mp3Stream { nullptr };
+    QIODevice *m_encodedFileStream { nullptr };
+    Recording::AbstractEncoderStream *m_encoderStream { nullptr };
 
     QString m_recordingDevId;
     QString m_monitorDevId;
@@ -100,6 +103,7 @@ private:
 
     QString m_saveDir;
     QString m_filename;
+    QString m_filetype { "mp3" };
     QString m_mp3ArtistName { "Someone" };
 };
 

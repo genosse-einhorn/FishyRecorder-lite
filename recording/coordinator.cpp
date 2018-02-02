@@ -2,6 +2,7 @@
 
 #include "levelcalculator.h"
 #include "lameencoderstream.h"
+#include "flacencoderstream.h"
 #include "backend.h"
 
 #include <QTimer>
@@ -107,24 +108,32 @@ void Coordinator::startRecording()
     if (isRecording())
         stopRecording();
 
-    QString filename = QString(tr("Recording from %2.mp3"))
-            .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hhmmss"));
+    QString filename = QString(tr("Recording from %1.%2"))
+            .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hhmmss"))
+            .arg(m_filetype);
 
     QString fullFilename = makeFilenameUnique(QDir::cleanPath(QString("%1/%2").arg(m_saveDir).arg(filename)));
-    m_mp3FileStream = new QFile(fullFilename);
-    if (!m_mp3FileStream->open(QIODevice::WriteOnly | QIODevice::Truncate))
+    m_encodedFileStream = new QFile(fullFilename);
+    if (!m_encodedFileStream->open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
-        error(tr("MP3: Could not open file %1: %2").arg(filename, m_mp3FileStream->errorString()));
+        error(tr("Could not open file %1: %2").arg(filename, m_encodedFileStream->errorString()));
         stopRecording();
         return;
     }
 
     QString track = tr("Recording from %1").arg(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
 
-    m_mp3Stream = new LameEncoderStream(this);
-    QObject::connect(m_mp3Stream, &LameEncoderStream::error, this, &Coordinator::error);
+    if (m_filetype == QString("flac"))
+    {
+        m_encoderStream = new FlacEncoderStream(this);
+    }
+    else
+    {
+        m_encoderStream = new LameEncoderStream(192, this);
+    }
+    QObject::connect(m_encoderStream, &AbstractEncoderStream::error, this, &Coordinator::error);
 
-    if (!m_mp3Stream->init(m_mp3ArtistName, track, 192, SAMPLE_RATE, m_mp3FileStream))
+    if (!m_encoderStream->init(m_mp3ArtistName, track, SAMPLE_RATE, m_encodedFileStream))
     {
         stopRecording();
         return;
@@ -136,18 +145,18 @@ void Coordinator::startRecording()
 
 void Coordinator::stopRecording()
 {
-    if (m_mp3Stream)
+    if (m_encoderStream)
     {
-        m_mp3Stream->close();
-        delete m_mp3Stream;
-        m_mp3Stream = nullptr;
+        m_encoderStream->close();
+        delete m_encoderStream;
+        m_encoderStream = nullptr;
     }
 
-    if (m_mp3FileStream)
+    if (m_encodedFileStream)
     {
-        m_mp3FileStream->close();
-        delete m_mp3FileStream;
-        m_mp3FileStream = nullptr;
+        m_encodedFileStream->close();
+        delete m_encodedFileStream;
+        m_encodedFileStream = nullptr;
     }
 
     m_samplesSaved = 0;
@@ -182,6 +191,15 @@ void Coordinator::setSaveDir(const QString &dir)
     {
         m_saveDir = dir;
         emit saveDirChanged(dir);
+    }
+}
+
+void Coordinator::setFileType(const QString &fileType)
+{
+    if (fileType != m_filetype)
+    {
+        m_filetype = fileType;
+        emit fileTypeChanged(m_filetype);
     }
 }
 
@@ -242,9 +260,9 @@ void Coordinator::processAudio()
         m_levelCalculator->processAudio(buffer, numSamples);
 
         // emit mp3 data
-        if (m_mp3Stream)
+        if (m_encoderStream)
         {
-            m_mp3Stream->writeAudio(buffer, numSamples);
+            m_encoderStream->writeAudio(buffer, numSamples);
 
             m_samplesSaved += numSamples;
         }

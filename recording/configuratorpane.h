@@ -29,11 +29,13 @@ signals:
     void monitorDevChanged(const QString &device);
     void volumeChanged(float factor);
     void outputDirChanged(const QString &fdir);
+    void fileFormatChanged(const QString &format);
     void mp3ArtistChanged(const QString &name);
 
 private slots:
     void cbRecordDevChanged();
     void cbMonitorDevChanged();
+    void cbFileFormatChanged();
     void slVolumeChanged();
     void outputDirButtonClick();
     void eMp3ArtistTextChanged();

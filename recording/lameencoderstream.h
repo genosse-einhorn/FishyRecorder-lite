@@ -1,7 +1,7 @@
 #ifndef LAMEENCODERSTREAM_H
 #define LAMEENCODERSTREAM_H
 
-#include <QObject>
+#include "abstractencoderstream.h"
 
 #include <lame/lame.h>
 
@@ -9,22 +9,19 @@ class QIODevice;
 
 namespace Recording {
 
-class LameEncoderStream: public QObject
+class LameEncoderStream: public AbstractEncoderStream
 {
     Q_OBJECT
 public:
-    explicit LameEncoderStream(QObject *parent = nullptr);
+    explicit LameEncoderStream(int brate, QObject *parent = nullptr);
     ~LameEncoderStream();
 
-    void close();
+    bool init(const QString& artist, const QString &track, int samplerate, QIODevice *output) override;
+    qint64 writeAudio(float *samples, qint64 count) override;
+    void close() override;
 
 signals:
     void error(const QString &message);
-
-public slots:
-    bool init(const QString& artist, const QString &track, int brate, int samplerate, QIODevice *output);
-
-    qint64 writeAudio(float *samples, qint64 count);
 
 private:
     lame_global_flags *m_lame_gbf;

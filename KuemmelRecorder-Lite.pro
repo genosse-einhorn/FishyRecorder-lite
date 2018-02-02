@@ -13,7 +13,7 @@ TEMPLATE = app
 
 LIBS += -lmp3lame
 
-PKGCONFIG += openal
+PKGCONFIG += openal flac
 
 QMAKE_CXXFLAGS_DEBUG -= -O0
 QMAKE_CXXFLAGS_DEBUG -= -O1
@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     recording/levelcalculator.cpp \
     recording/statusview.cpp \
     recording/lastfilepane.cpp \
-    recording/backend.cpp
+    recording/backend.cpp \
+    recording/abstractencoderstream.cpp \
+    recording/flacencoderstream.cpp
 
 HEADERS  += mainwindow.h \
     recording/lameencoderstream.h \
@@ -44,7 +46,9 @@ HEADERS  += mainwindow.h \
     recording/levelcalculator.h \
     recording/statusview.h \
     recording/lastfilepane.h \
-    recording/backend.h
+    recording/backend.h \
+    recording/abstractencoderstream.h \
+    recording/flacencoderstream.h
 
 FORMS    += mainwindow.ui \
     recording/recordingstatusview.ui \
