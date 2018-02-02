@@ -61,3 +61,11 @@ TRANSLATIONS += l10n/recorder_de.ts
 win32 {
     RC_ICONS = img/fishy.ico
 }
+
+packagesExist(mxe-licenses-html) {
+    DEFINES += HAVE_THIRDPARTY_LICENSES
+    PKGCONFIG += mxe-licenses-html zlib
+    SOURCES += thirdpartylicensedialog.cpp
+    HEADERS += thirdpartylicensedialog.h
+    FORMS +=  thirdpartylicensedialog.ui
+}

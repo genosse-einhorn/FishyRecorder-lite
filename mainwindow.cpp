@@ -3,6 +3,10 @@
 
 #include "recording/coordinator.h"
 
+#ifdef HAVE_THIRDPARTY_LICENSES
+#   include "thirdpartylicensedialog.h"
+#endif
+
 #include <lame/lame.h>
 
 #include <QStandardPaths>
@@ -72,6 +76,18 @@ MainWindow::MainWindow(QWidget *parent) :
     tb->addWidget(spacer);
     QMenu *helpMenu = new QMenu(this);
     helpMenu->addAction(ui->actionAudioDebugInfo);
+    helpMenu->addSeparator();
+
+#ifdef HAVE_THIRDPARTY_LICENSES
+    QAction *tpLicensesDialog = new QAction(tr("3rd-Party Licenses"), this);
+    QObject::connect(tpLicensesDialog, &QAction::triggered, this, [=](){
+        ThirdPartyLicenseDialog d(this);
+        d.exec();
+    });
+    helpMenu->addAction(tpLicensesDialog);
+    helpMenu->addSeparator();
+#endif
+
     helpMenu->addAction(ui->actionAbout);
     ui->bHelp->setMenu(helpMenu);
     ui->bHelp->setStyleSheet("*:menu-indicator { image: none; }");
