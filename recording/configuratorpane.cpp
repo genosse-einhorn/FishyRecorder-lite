@@ -67,7 +67,7 @@ ConfiguratorPane::ConfiguratorPane(QWidget *parent) :
         artist = tr("Someone");
     ui->eMp3Artist->setText(artist);
 
-    ui->cbFileFormat->addItem(tr("MP3 (192kbit/s"), "mp3");
+    ui->cbFileFormat->addItem(tr("MP3 (192kbit/s)"), "mp3");
     ui->cbFileFormat->addItem(tr("FLAC (lossless)"), "flac");
     ui->cbFileFormat->setCurrentIndex(ui->cbFileFormat->findData(
         settings.value("File Format", "mp3")));

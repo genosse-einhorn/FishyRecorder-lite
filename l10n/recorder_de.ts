@@ -50,7 +50,7 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="187"/>
-        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>About</source>
         <translation>Info</translation>
     </message>
@@ -60,12 +60,17 @@
         <translation>OpenAL Debug-Informationen...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="82"/>
+        <source>3rd-Party Licenses</source>
+        <translation>Lizenzen von Drittanbietern</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2018 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="128"/>
+        <location filename="../mainwindow.cpp" line="144"/>
         <source>OpenAL debug information</source>
         <translation>OpenAL Debug-Informationen</translation>
     </message>
@@ -81,18 +86,28 @@
 <context>
     <name>Recording::ConfiguratorPane</name>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="22"/>
         <location filename="../recording/configuratorpane.cpp" line="23"/>
+        <location filename="../recording/configuratorpane.cpp" line="24"/>
         <source>&lt;Default Device&gt;</source>
         <translation>&lt;Standardgerät&gt;</translation>
     </message>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="66"/>
+        <location filename="../recording/configuratorpane.cpp" line="67"/>
         <source>Someone</source>
         <translation>Jemand</translation>
     </message>
     <message>
-        <location filename="../recording/configuratorpane.cpp" line="118"/>
+        <location filename="../recording/configuratorpane.cpp" line="70"/>
+        <source>MP3 (192kbit/s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../recording/configuratorpane.cpp" line="71"/>
+        <source>FLAC (lossless)</source>
+        <translation>FLAC (verlustfrei)</translation>
+    </message>
+    <message>
+        <location filename="../recording/configuratorpane.cpp" line="134"/>
         <source>Select Directory</source>
         <translation>Verzeichnis auswählen</translation>
     </message>
@@ -100,17 +115,25 @@
 <context>
     <name>Recording::Coordinator</name>
     <message>
-        <location filename="../recording/coordinator.cpp" line="110"/>
         <source>Recording from %2.mp3</source>
-        <translation>Aufnahme vom %2.mp3</translation>
+        <translation type="vanished">Aufnahme vom %2.mp3</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="117"/>
         <source>MP3: Could not open file %1: %2</source>
-        <translation>MP3: Konnte Datei %1 nicht öffnen: %2</translation>
+        <translation type="vanished">MP3: Konnte Datei %1 nicht öffnen: %2</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="122"/>
+        <location filename="../recording/coordinator.cpp" line="111"/>
+        <source>Recording from %1.%2</source>
+        <translation>Aufnahme vom %1.%2</translation>
+    </message>
+    <message>
+        <location filename="../recording/coordinator.cpp" line="119"/>
+        <source>Could not open file %1: %2</source>
+        <translation>Konnte Datei %1 nicht öffnen: %2</translation>
+    </message>
+    <message>
+        <location filename="../recording/coordinator.cpp" line="124"/>
         <source>Recording from %1</source>
         <translation>Aufnahme vom %1</translation>
     </message>
@@ -131,6 +154,15 @@
         <location filename="../recording/errorwidget.cpp" line="67"/>
         <source>Notice</source>
         <translation>Information</translation>
+    </message>
+</context>
+<context>
+    <name>Recording::FlacEncoderStream</name>
+    <message>
+        <location filename="../recording/flacencoderstream.cpp" line="62"/>
+        <location filename="../recording/flacencoderstream.cpp" line="95"/>
+        <source>FLAC Error: %1</source>
+        <translation>FLAC-Fehler: %1</translation>
     </message>
 </context>
 <context>
@@ -199,28 +231,53 @@
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="84"/>
-        <source>0%</source>
-        <translation>0%</translation>
+        <source>-∞dB</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="91"/>
-        <source>50%</source>
-        <translation>50%</translation>
+        <source>-24dB</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="101"/>
-        <source>100%</source>
-        <translation>100%</translation>
+        <source>±0dB</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="111"/>
-        <source>150%</source>
-        <translation>150%</translation>
+        <source>+14dB</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="121"/>
+        <source>+24dB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../recording/recordingconfiguratorpane.ui" line="182"/>
+        <source>File Format</source>
+        <translation>Dateiformat</translation>
+    </message>
+    <message>
+        <source>0%</source>
+        <translation type="vanished">0%</translation>
+    </message>
+    <message>
+        <source>50%</source>
+        <translation type="vanished">50%</translation>
+    </message>
+    <message>
+        <source>100%</source>
+        <translation type="vanished">100%</translation>
+    </message>
+    <message>
+        <source>150%</source>
+        <translation type="vanished">150%</translation>
+    </message>
+    <message>
         <source>200%</source>
-        <translation>200%</translation>
+        <translation type="vanished">200%</translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="138"/>
@@ -272,6 +329,14 @@
         <location filename="../recording/statusview.cpp" line="52"/>
         <source>STOPPED</source>
         <translation>ANGEHALTEN</translation>
+    </message>
+</context>
+<context>
+    <name>ThirdPartyLicenseDialog</name>
+    <message>
+        <location filename="../thirdpartylicensedialog.ui" line="14"/>
+        <source>3rd-Party Licenses</source>
+        <translation>Lizenzen von Drittanbietern</translation>
     </message>
 </context>
 </TS>
