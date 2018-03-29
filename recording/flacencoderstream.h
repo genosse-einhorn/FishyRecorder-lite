@@ -3,7 +3,8 @@
 
 #include "abstractencoderstream.h"
 
-#include "FLAC/stream_encoder.h"
+#include <FLAC/stream_encoder.h>
+#include <FLAC/metadata.h>
 #include <random>
 
 namespace Recording {
@@ -21,6 +22,7 @@ public:
 
 private:
     FLAC__StreamEncoder *m_encoder { nullptr };
+    FLAC__StreamMetadata *m_vorbiscomm { nullptr };
 
     // dither state
     std::mt19937 m_randomGenerator { std::random_device()() };

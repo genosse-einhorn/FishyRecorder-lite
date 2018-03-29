@@ -42,6 +42,9 @@ FlacEncoderStream::~FlacEncoderStream()
     close();
     FLAC__stream_encoder_delete(m_encoder);
     m_encoder = nullptr;
+
+    if (m_vorbiscomm) FLAC__metadata_object_delete(m_vorbiscomm);
+    m_vorbiscomm = nullptr;
 }
 
 } // namespace Recording
@@ -54,6 +57,22 @@ bool Recording::FlacEncoderStream::init(const QString &artist, const QString &tr
     Q_UNUSED(track);
 
     FLAC__stream_encoder_set_sample_rate(m_encoder, samplerate);
+
+    if (m_vorbiscomm) FLAC__metadata_object_delete(m_vorbiscomm);
+    m_vorbiscomm = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+    if (artist.size())
+    {
+        QByteArray c = QStringLiteral("ARTIST=%1").arg(artist).toUtf8();
+        FLAC__metadata_object_vorbiscomment_append_comment(m_vorbiscomm, { (FLAC__uint32)c.size(), (FLAC__byte*)c.data() }, true);
+    }
+
+    if (track.size())
+    {
+        QByteArray c = QStringLiteral("TITLE=%1").arg(track).toUtf8();
+        FLAC__metadata_object_vorbiscomment_append_comment(m_vorbiscomm, { (FLAC__uint32)c.size(), (FLAC__byte*)c.data() }, true);
+    }
+
+    FLAC__stream_encoder_set_metadata(m_encoder, &m_vorbiscomm, 1u);
 
     auto status = FLAC__stream_encoder_init_stream(m_encoder, &writeToQIODevice, nullptr, nullptr, nullptr, output);
 
