@@ -28,12 +28,10 @@ LameEncoderStream::init(const QString &artist, const QString &trackName, int sam
     id3tag_v2_only(m_lame_gbf);
 
     if (artist.length()) {
-        QByteArray artist_u8 = artist.toUtf8();
-        id3tag_set_artist(m_lame_gbf, artist_u8.constData());
+        id3tag_set_fieldvalue_utf16(m_lame_gbf, QStringLiteral(u"\uFEFFTPE1=%1").arg(artist).utf16());
     }
     if (trackName.length()) {
-        QByteArray trackName_u8 = trackName.toUtf8();
-        id3tag_set_title(m_lame_gbf, trackName_u8.constData());
+        id3tag_set_fieldvalue_utf16(m_lame_gbf, QStringLiteral(u"\uFEFFTIT2=%1").arg(trackName).utf16());
     }
 
     if (lame_init_params(m_lame_gbf) < 0) {
