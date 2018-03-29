@@ -8,6 +8,7 @@
 #endif
 
 #include <lame/lame.h>
+#include <FLAC/format.h>
 
 #include <QStandardPaths>
 #include <QDateTime>
@@ -121,6 +122,8 @@ void MainWindow::showAboutDialog()
         "Running on <br>"
         "<a href=\"https://www.qt.io/\">Qt</a> %%QT_VERSION%%<br>"
         "<a href=\"http://lame.sourceforge.net/\">LAME</a> %%LAME_VERSION%%<br>"
+        "<a href=\"https://xiph.org/flac/\">FLAC</a> %%FLAC_VERSION%%<br>"
+        "<a href=\"https://www.openal.org/\">OpenAL</a> (<a href=\"http://kcat.strangesoft.net/openal.html\">OpenAL Soft</a>)<br>"
         "<p>"
         "This program is free software: you can redistribute it and/or modify "
         "it under the terms of the GNU General Public License as published by "
@@ -136,7 +139,8 @@ void MainWindow::showAboutDialog()
         "<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>."
      ).replace("%%RECORDER_VERSION%%", GIT_REVNO)
         .replace("%%QT_VERSION%%", qVersion())
-        .replace("%%LAME_VERSION%%", get_lame_version()));
+        .replace("%%LAME_VERSION%%", get_lame_version())
+        .replace("%%FLAC_VERSION%%", FLAC__VERSION_STRING));
 }
 
 void MainWindow::showAlDebugDialog()
