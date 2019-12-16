@@ -122,7 +122,7 @@ void MainWindow::showAboutDialog()
     QMessageBox::about(this, tr("About"), tr(
         "<h3>&lt;&gt;&lt; Recorder (Lite)</h3>"
         "%%RECORDER_VERSION%%<br>"
-        "Copyright &copy; 2018 Jonas Kümmerlin &lt;jonas@kuemmerlin.eu&gt;"
+        "Copyright &copy; 2018-2020 Jonas Kümmerlin &lt;jonas@kuemmerlin.eu&gt;"
         "<p>"
         "Running on <br>"
         "<a href=\"https://www.qt.io/\">Qt</a> %%QT_VERSION%%<br>"
