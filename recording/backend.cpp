@@ -1,6 +1,7 @@
 #include "backend.h"
 
 #include <cmath>
+#include <QDebug>
 
 static QString getAlErrorStr()
 {
@@ -58,6 +59,7 @@ qint64 Backend::retrieveRecordedSamples(float *buffer, qint64 numSamples)
     if (err.size())
     {
         emit error(QString("alcCaptureSamples: %1").arg(err));
+        qCritical() << "alcCaptureSamples:" << err;
         return 0;
     }
 
@@ -75,6 +77,7 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
     if (err.size())
     {
         emit error(QString("alcMakeContextCurrent: %1").arg(err));
+        qCritical() << "alcMakeContextCurrent:" << err;
         return;
     }
 
@@ -95,6 +98,7 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
     if (m_availableBuffers.empty())
     {
         emit error(tr("Buffer overflow! Cannot play back any more audio."));
+        qCritical() << "Buffer overflow! Cannot play back any more audio.";
         return;
     }
 
@@ -106,6 +110,7 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
     if (err.size())
     {
         emit error(QString("alBufferData: %1").arg(err));
+        qCritical() << "alBufferData:" << err;
         return;
     }
 
@@ -114,6 +119,7 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
     if (err.size())
     {
         emit error(QString("alSourceQueueBuffers: %1").arg(err));
+        qCritical() << "alSourceQueueBuffers:" << err;
         return;
     }
 
@@ -130,6 +136,7 @@ void Backend::submitSamplesForPlayback(float *buffer, qint64 numSamples)
         if (err.size())
         {
             emit error(QString("alSourcePlay: %1").arg(err));
+            qCritical() << "alSourcePlay:" << err;
         }
     }
 }
@@ -148,6 +155,7 @@ void Backend::openRecordDevice(const QString &device)
     if (!m_recordDevice)
     {
         emit error(QString("alcCaptureOpenDevice: %1").arg(getAlcErrorStr(nullptr)));
+        qCritical() << "alcCaptureOpenDevice:" << getAlcErrorStr(nullptr);
         return;
     }
 
@@ -157,6 +165,7 @@ void Backend::openRecordDevice(const QString &device)
     if (err.size())
     {
         emit error(QString("alcCaptureStart: %1").arg(err));
+        qCritical() << "alcCaptureStart:" << err;
         closeRecordDevice();
         return;
     }
@@ -173,6 +182,7 @@ void Backend::openPlaybackDevice(const QString &device)
     if (!m_playbackDevice)
     {
         emit error(QString("alcOpenDevice: %1").arg(getAlcErrorStr(nullptr)));
+        qCritical() << "alcOpenDevice:" << getAlcErrorStr(nullptr);
         return;
     }
 
@@ -180,6 +190,7 @@ void Backend::openPlaybackDevice(const QString &device)
     if (!m_playbackContext)
     {
         emit error(QString("alcCreateContext: %1").arg(getAlcErrorStr(m_playbackDevice)));
+        qCritical() << "alcCreateContext:" << getAlcErrorStr(m_playbackDevice);
         closePlaybackDevice();
         return;
     }
@@ -191,6 +202,7 @@ void Backend::openPlaybackDevice(const QString &device)
     if (err.size())
     {
         emit error(QString("alGenSources: %1").arg(err));
+        qCritical() << "alGenSources:" << err;
         closePlaybackDevice();
         return;
     }
@@ -205,6 +217,7 @@ void Backend::openPlaybackDevice(const QString &device)
         {
             m_registeredBuffers.resize(0);
             emit error(QString("alGenBuffers: %1").arg(err));
+            qCritical() << "alGenBuffers:" << err;
             closePlaybackDevice();
             return;
         }

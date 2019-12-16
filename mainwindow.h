@@ -30,6 +30,7 @@ private:
     void recordingStateChanged(bool isRecording);
     void showAboutDialog();
     void showAlDebugDialog();
+    void showLogFiles();
 };
 
 #endif // MAINWINDOW_H

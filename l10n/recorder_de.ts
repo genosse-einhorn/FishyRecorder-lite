@@ -50,7 +50,7 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="187"/>
-        <location filename="../mainwindow.cpp" line="116"/>
+        <location filename="../mainwindow.cpp" line="128"/>
         <source>About</source>
         <translation>Info</translation>
     </message>
@@ -60,17 +60,22 @@
         <translation>OpenAL Debug-Informationen...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="82"/>
+        <location filename="../mainwindow.ui" line="197"/>
+        <source>Log files</source>
+        <translation>Protokolldateien</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="94"/>
         <source>3rd-Party Licenses</source>
         <translation>Lizenzen von Drittanbietern</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="116"/>
-        <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2018 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
+        <location filename="../mainwindow.cpp" line="128"/>
+        <source>&lt;h3&gt;&amp;lt;&amp;gt;&amp;lt; Recorder (Lite)&lt;/h3&gt;%%RECORDER_VERSION%%&lt;br&gt;Copyright &amp;copy; 2018 Jonas Kümmerlin &amp;lt;jonas@kuemmerlin.eu&amp;gt;&lt;p&gt;Running on &lt;br&gt;&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt; %%QT_VERSION%%&lt;br&gt;&lt;a href=&quot;http://lame.sourceforge.net/&quot;&gt;LAME&lt;/a&gt; %%LAME_VERSION%%&lt;br&gt;&lt;a href=&quot;https://xiph.org/flac/&quot;&gt;FLAC&lt;/a&gt; %%FLAC_VERSION%%&lt;br&gt;&lt;a href=&quot;https://www.openal.org/&quot;&gt;OpenAL&lt;/a&gt; (&lt;a href=&quot;http://kcat.strangesoft.net/openal.html&quot;&gt;OpenAL Soft&lt;/a&gt;)&lt;br&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;p&gt;A copy of the GNU General Public License can be retrieved from &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="159"/>
         <source>OpenAL debug information</source>
         <translation>OpenAL Debug-Informationen</translation>
     </message>
@@ -78,7 +83,7 @@
 <context>
     <name>Recording::Backend</name>
     <message>
-        <location filename="../recording/backend.cpp" line="97"/>
+        <location filename="../recording/backend.cpp" line="100"/>
         <source>Buffer overflow! Cannot play back any more audio.</source>
         <translation>Pufferüberlauf! Audioausgabe unterbrochen.</translation>
     </message>
@@ -99,7 +104,7 @@
     <message>
         <location filename="../recording/configuratorpane.cpp" line="70"/>
         <source>MP3 (192kbit/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>MP3 (192kbit/s)</translation>
     </message>
     <message>
         <location filename="../recording/configuratorpane.cpp" line="71"/>
@@ -115,25 +120,17 @@
 <context>
     <name>Recording::Coordinator</name>
     <message>
-        <source>Recording from %2.mp3</source>
-        <translation type="vanished">Aufnahme vom %2.mp3</translation>
-    </message>
-    <message>
-        <source>MP3: Could not open file %1: %2</source>
-        <translation type="vanished">MP3: Konnte Datei %1 nicht öffnen: %2</translation>
-    </message>
-    <message>
-        <location filename="../recording/coordinator.cpp" line="111"/>
+        <location filename="../recording/coordinator.cpp" line="117"/>
         <source>Recording from %1.%2</source>
         <translation>Aufnahme vom %1.%2</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="119"/>
+        <location filename="../recording/coordinator.cpp" line="125"/>
         <source>Could not open file %1: %2</source>
         <translation>Konnte Datei %1 nicht öffnen: %2</translation>
     </message>
     <message>
-        <location filename="../recording/coordinator.cpp" line="124"/>
+        <location filename="../recording/coordinator.cpp" line="131"/>
         <source>Recording from %1</source>
         <translation>Aufnahme vom %1</translation>
     </message>
@@ -159,8 +156,8 @@
 <context>
     <name>Recording::FlacEncoderStream</name>
     <message>
-        <location filename="../recording/flacencoderstream.cpp" line="62"/>
-        <location filename="../recording/flacencoderstream.cpp" line="95"/>
+        <location filename="../recording/flacencoderstream.cpp" line="82"/>
+        <location filename="../recording/flacencoderstream.cpp" line="116"/>
         <source>FLAC Error: %1</source>
         <translation>FLAC-Fehler: %1</translation>
     </message>
@@ -168,30 +165,30 @@
 <context>
     <name>Recording::LameEncoderStream</name>
     <message>
-        <location filename="../recording/lameencoderstream.cpp" line="40"/>
+        <location filename="../recording/lameencoderstream.cpp" line="38"/>
         <source>MP3/LAME Error: Programmer mistake: Couldn&apos;t initialize lame encoder</source>
         <translation>MP3/LAME Fehler: Programmierfehler: Der Kodierer konnte nicht initialisiert werden</translation>
     </message>
     <message>
-        <location filename="../recording/lameencoderstream.cpp" line="52"/>
+        <location filename="../recording/lameencoderstream.cpp" line="51"/>
         <source>MP3/LAME Error: Could not write to file: %1</source>
         <translation>MP3/LAME Fehler: Konnte Datei nicht schreiben: %1</translation>
     </message>
     <message>
         <location filename="../recording/lameencoderstream.cpp" line="75"/>
-        <location filename="../recording/lameencoderstream.cpp" line="94"/>
+        <location filename="../recording/lameencoderstream.cpp" line="96"/>
         <source>MP3/LAME Error: Probably a programmer mistake. Hint: %1</source>
         <translation>MP3/LAME Error: Vermutlich Programmierfehler. Hinweis: %1</translation>
     </message>
     <message>
-        <location filename="../recording/lameencoderstream.cpp" line="79"/>
-        <source>MP3 Error: The device didn&apos;t feel like writing all of our data. Sorry.</source>
-        <translation>MP3 Fehler: Konnte nicht alle Daten schreiben.</translation>
+        <location filename="../recording/lameencoderstream.cpp" line="80"/>
+        <source>MP3/LAME Error: The device didn&apos;t feel like writing all of our data. Sorry.</source>
+        <translation>MP3/LAME Fehler: Konnte nicht alle Daten schreiben.</translation>
     </message>
     <message>
-        <location filename="../recording/lameencoderstream.cpp" line="101"/>
-        <source>MP3 Error: The device didn&apos;t feel like writing all of our data. Aborting.</source>
-        <translation>MP3 Fehler: Konnte nicht alle Daten schreiben. Abbruch.</translation>
+        <location filename="../recording/lameencoderstream.cpp" line="104"/>
+        <source>MP3/LAME Error: The device didn&apos;t feel like writing all of our data. Aborting.</source>
+        <translation>MP3/LAME Fehler: Konnte nicht alle Daten schreiben. Abbruch.</translation>
     </message>
 </context>
 <context>
@@ -258,26 +255,6 @@
         <location filename="../recording/recordingconfiguratorpane.ui" line="182"/>
         <source>File Format</source>
         <translation>Dateiformat</translation>
-    </message>
-    <message>
-        <source>0%</source>
-        <translation type="vanished">0%</translation>
-    </message>
-    <message>
-        <source>50%</source>
-        <translation type="vanished">50%</translation>
-    </message>
-    <message>
-        <source>100%</source>
-        <translation type="vanished">100%</translation>
-    </message>
-    <message>
-        <source>150%</source>
-        <translation type="vanished">150%</translation>
-    </message>
-    <message>
-        <source>200%</source>
-        <translation type="vanished">200%</translation>
     </message>
     <message>
         <location filename="../recording/recordingconfiguratorpane.ui" line="138"/>

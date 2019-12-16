@@ -70,6 +70,8 @@ QString Coordinator::backendDebugInfo()
 
 void Coordinator::setRecordingDevice(const QString &deviceId)
 {
+    qInfo() << "Selected recording device:" << deviceId;
+
     stopAudioInput();
 
     m_recordingDevId = deviceId;
@@ -80,6 +82,8 @@ void Coordinator::setRecordingDevice(const QString &deviceId)
 
 void Coordinator::setMonitorDevice(const QString &device)
 {
+    qInfo() << "Selected monitor device:" << device;
+
     stopMonitorOutput();
 
     m_monitorDevId = device;
@@ -108,6 +112,8 @@ void Coordinator::startRecording()
     if (isRecording())
         stopRecording();
 
+    qInfo() << "Starting recording";
+
     QString filename = QString(tr("Recording from %1.%2"))
             .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hhmmss"))
             .arg(m_filetype);
@@ -117,6 +123,7 @@ void Coordinator::startRecording()
     if (!m_encodedFileStream->open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         error(tr("Could not open file %1: %2").arg(filename, m_encodedFileStream->errorString()));
+        qCritical() << "Could not open file" << filename << ":" << m_encodedFileStream->errorString();
         stopRecording();
         return;
     }
@@ -135,9 +142,12 @@ void Coordinator::startRecording()
 
     if (!m_encoderStream->init(m_mp3ArtistName, track, SAMPLE_RATE, m_encodedFileStream))
     {
+        qCritical() << "Failed to initialize encoder stream";
         stopRecording();
         return;
     }
+
+    qInfo() << "Recording to" << fullFilename;
 
     emit recordingChanged(isRecording());
     emit recordingFileOpened(fullFilename);
@@ -145,6 +155,8 @@ void Coordinator::startRecording()
 
 void Coordinator::stopRecording()
 {
+    qInfo() << "Stopping recording";
+
     if (m_encoderStream)
     {
         m_encoderStream->close();

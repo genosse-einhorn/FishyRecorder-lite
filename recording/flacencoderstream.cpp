@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <QIODevice>
+#include <QDebug>
 
 namespace {
 
@@ -79,6 +80,7 @@ bool Recording::FlacEncoderStream::init(const QString &artist, const QString &tr
     if (status != FLAC__STREAM_ENCODER_INIT_STATUS_OK)
     {
         emit error(tr("FLAC Error: %1").arg(FLAC__StreamEncoderInitStatusString[status]));
+        qCritical() << "FLAC Error: " << FLAC__StreamEncoderInitStatusString[status];
         return false;
     }
 
@@ -112,6 +114,7 @@ qint64 Recording::FlacEncoderStream::writeAudio(float *samples, qint64 count)
         {
             auto status = FLAC__stream_encoder_get_state(m_encoder);
             emit error(tr("FLAC Error: %1").arg(FLAC__StreamEncoderInitStatusString[status]));
+            qCritical() << "FLAC Error: " << FLAC__StreamEncoderInitStatusString[status];
             return i;
         }
     }

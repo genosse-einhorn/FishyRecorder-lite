@@ -192,6 +192,11 @@
     <string>OpenAL debug info...</string>
    </property>
   </action>
+  <action name="actionLogFiles">
+   <property name="text">
+    <string>Log files</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

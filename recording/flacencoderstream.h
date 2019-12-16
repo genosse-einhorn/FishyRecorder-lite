@@ -11,6 +11,7 @@ namespace Recording {
 
 class FlacEncoderStream : public AbstractEncoderStream
 {
+    Q_OBJECT
 public:
     explicit FlacEncoderStream(QObject *parent = nullptr);
     ~FlacEncoderStream() override;

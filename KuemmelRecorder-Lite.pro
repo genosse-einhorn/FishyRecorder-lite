@@ -24,6 +24,7 @@ QMAKE_CXXFLAGS_DEBUG *= -Og
 DEFINES += GIT_REVNO="\\\"$(shell git -C \""$$_PRO_FILE_PWD_"\" describe --tags --always)\\\""
 
 SOURCES += main.cpp\
+    logger.cpp \
     mainwindow.cpp \
     recording/lameencoderstream.cpp \
     recording/configuratorpane.cpp \
@@ -38,6 +39,7 @@ SOURCES += main.cpp\
     recording/flacencoderstream.cpp
 
 HEADERS  += mainwindow.h \
+    logger.h \
     recording/lameencoderstream.h \
     recording/configuratorpane.h \
     recording/coordinator.h \

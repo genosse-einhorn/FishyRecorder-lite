@@ -36,6 +36,7 @@ LameEncoderStream::init(const QString &artist, const QString &trackName, int sam
 
     if (lame_init_params(m_lame_gbf) < 0) {
         error(tr("MP3/LAME Error: Programmer mistake: Couldn't initialize lame encoder"));
+        qCritical() << "MP3/LAME Error: Programmer mistake: Couldn't initialize lame encoder";
         return false;
     }
 
@@ -48,6 +49,7 @@ LameEncoderStream::init(const QString &artist, const QString &trackName, int sam
     if (output->write((const char*)buffer.get(), qint64(bufsize)) < 0)
     {
         error(tr("MP3/LAME Error: Could not write to file: %1").arg(output->errorString()));
+        qCritical() << "MP3/LAME Error: Could not write to file" << output->errorString();
         return false;
     }
 
@@ -71,10 +73,12 @@ void LameEncoderStream::close()
 
     if (bytesEncoded < 0) {
         error(tr("MP3/LAME Error: Probably a programmer mistake. Hint: %1").arg(bytesEncoded));
+        qCritical() << "MP3/LAME Error: Probably a programmer mistake. bytesEncoded=" << bytesEncoded;
     } else {
         auto bytesWritten = m_device->write((const char*)lastBits, bytesEncoded);
         if (bytesWritten != bytesEncoded) {
-            error(tr("MP3 Error: The device didn't feel like writing all of our data. Sorry."));
+            error(tr("MP3/LAME Error: The device didn't feel like writing all of our data. Sorry."));
+            qCritical() << "MP3/LAME Error: The device didn't feel like writing all of our data. Sorry.";
         }
     }
 
@@ -90,13 +94,15 @@ qint64 LameEncoderStream::writeAudio(float *buffer, qint64 numSamples)
 
     if (bytesEncoded < 0) {
         error(tr("MP3/LAME Error: Probably a programmer mistake. Hint: %1").arg(bytesEncoded));
+        qCritical() << "MP3/LAME Error: Probably a programmer mistake. bytesEncoded=" << bytesEncoded;
 
         close();
         return -1;
     } else {
         auto bytesWritten = m_device->write((const char*)outBuffer, bytesEncoded);
         if (bytesWritten != bytesEncoded) {
-            error(tr("MP3 Error: The device didn't feel like writing all of our data. Aborting."));
+            error(tr("MP3/LAME Error: The device didn't feel like writing all of our data. Aborting."));
+            qCritical() << "MP3/LAME Error: The device didn't feel like writing all of our data. Aborting.";
 
             close();
             return -1;
