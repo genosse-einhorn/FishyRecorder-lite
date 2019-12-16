@@ -57,8 +57,6 @@ FORMS    += mainwindow.ui \
     recording/recordingconfiguratorpane.ui \
     recording/lastfilepane.ui
 
-INCLUDEPATH += ../libsoundio/soundio
-
 RESOURCES += \
     recorder.qrc
 
