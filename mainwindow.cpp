@@ -2,23 +2,17 @@
 #include "ui_mainwindow.h"
 
 #include "recording/coordinator.h"
+#include "recording/utilopenfile.h"
 #include "logger.h"
 
 #ifdef HAVE_THIRDPARTY_LICENSES
 #   include "thirdpartylicensedialog.h"
 #endif
 
-#ifdef Q_OS_WIN32
-#   include <windows.h>
-#   include <shlobj.h>
-#endif
-
 #include <lame/lame.h>
 #include <FLAC/format.h>
 
 #include <QDebug>
-#include <QStandardPaths>
-#include <QDesktopServices>
 #include <QProcess>
 #include <QDateTime>
 #include <QFileDialog>
@@ -163,30 +157,5 @@ void MainWindow::showAlDebugDialog()
 
 void MainWindow::showLogFiles()
 {
-#if defined(Q_OS_WIN32)
-    QString filename = QDir::toNativeSeparators(Logger::currentLogFile());
-    LPITEMIDLIST pidl = nullptr;
-    HRESULT hr = SHParseDisplayName(reinterpret_cast<const wchar_t*>(filename.utf16()), nullptr, &pidl, 0, nullptr);
-    if (!SUCCEEDED(hr))
-        qWarning() << "Failed SHParseDisplayName:" << hr;
-
-    hr = SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
-    if (!SUCCEEDED(hr))
-        qWarning() << "Failed SHOpenFolderAndSelectItems:" << hr;
-
-    ILFree(pidl);
-#elif defined(Q_OS_UNIX)
-    auto url = QUrl::fromLocalFile(Logger::currentLogFile()).toString(QUrl::FullyEncoded);
-    if (QProcess::execute("dbus-send", {
-        "--print-reply",
-        "--dest=org.freedesktop.FileManager1",
-        "/org/freedesktop/FileManager1",
-        "org.freedesktop.FileManager1.ShowItems",
-        QString("array:string:%1").arg(url),
-        "string:"
-    }) != 0) {
-        auto dirurl = QUrl::fromLocalFile(QFileInfo(Logger::currentLogFile()).absolutePath());
-        QDesktopServices::openUrl(dirurl);
-    }
-#endif
+    Recording::Util::showFileInExplorer(Logger::currentLogFile());
 }

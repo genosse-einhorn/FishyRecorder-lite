@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     recording/lastfilepane.cpp \
     recording/backend.cpp \
     recording/abstractencoderstream.cpp \
-    recording/flacencoderstream.cpp
+    recording/flacencoderstream.cpp \
+    recording/utilopenfile.cpp
 
 HEADERS  += mainwindow.h \
     logger.h \
@@ -50,7 +51,8 @@ HEADERS  += mainwindow.h \
     recording/lastfilepane.h \
     recording/backend.h \
     recording/abstractencoderstream.h \
-    recording/flacencoderstream.h
+    recording/flacencoderstream.h \
+    recording/utilopenfile.h
 
 FORMS    += mainwindow.ui \
     recording/recordingstatusview.ui \

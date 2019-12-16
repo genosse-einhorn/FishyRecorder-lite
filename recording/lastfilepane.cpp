@@ -1,10 +1,8 @@
 #include "lastfilepane.h"
 #include "ui_lastfilepane.h"
+#include "utilopenfile.h"
 
 #include <QFileInfo>
-#include <QDir>
-#include <QUrl>
-#include <QProcess>
 
 namespace Recording {
 
@@ -38,25 +36,7 @@ void LastFilePane::newRecordingFile(const QString &file)
 
 void LastFilePane::showFileInExplorer()
 {
-#if defined(Q_OS_WIN32)
-    QString filename = QDir::toNativeSeparators(m_file);
-    QProcess explorer;
-    explorer.setProgram("explorer.exe");
-    explorer.setNativeArguments(QString("/select,\"%1\"").arg(filename));
-    explorer.start();
-    explorer.waitForFinished();
-
-#elif defined(Q_OS_UNIX)
-    auto url = QUrl::fromLocalFile(m_file).toString(QUrl::FullyEncoded);
-    QProcess::execute("dbus-send", {
-        "--print-reply",
-        "--dest=org.freedesktop.FileManager1",
-        "/org/freedesktop/FileManager1",
-        "org.freedesktop.FileManager1.ShowItems",
-        QString("array:string:%1").arg(url),
-        "string:"
-    });
-#endif
+    Util::showFileInExplorer(m_file);
 }
 
 } // namespace Recording
