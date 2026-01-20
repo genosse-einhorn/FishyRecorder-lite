@@ -4,6 +4,7 @@
 
 #include <QDebug>
 #include <memory>
+#include <vector>
 
 namespace Recording {
 
@@ -87,10 +88,10 @@ void LameEncoderStream::close()
 
 qint64 LameEncoderStream::writeAudio(float *buffer, qint64 numSamples)
 {
-    unsigned char outBuffer[(numSamples/lame_get_in_samplerate(m_lame_gbf) + 1)*lame_get_brate(m_lame_gbf) + 7200];
+    std::vector<unsigned char> outBuffer((numSamples/lame_get_in_samplerate(m_lame_gbf) + 1)*lame_get_brate(m_lame_gbf) + 7200);
 
     int bytesEncoded = lame_encode_buffer_interleaved_ieee_float(m_lame_gbf, buffer,
-        (int)numSamples, outBuffer, sizeof(outBuffer));
+        (int)numSamples, outBuffer.data(), outBuffer.size());
 
     if (bytesEncoded < 0) {
         error(tr("MP3/LAME Error: Probably a programmer mistake. Hint: %1").arg(bytesEncoded));
@@ -99,7 +100,7 @@ qint64 LameEncoderStream::writeAudio(float *buffer, qint64 numSamples)
         close();
         return -1;
     } else {
-        auto bytesWritten = m_device->write((const char*)outBuffer, bytesEncoded);
+        auto bytesWritten = m_device->write((const char*)outBuffer.data(), bytesEncoded);
         if (bytesWritten != bytesEncoded) {
             error(tr("MP3/LAME Error: The device didn't feel like writing all of our data. Aborting."));
             qCritical() << "MP3/LAME Error: The device didn't feel like writing all of our data. Aborting.";
