@@ -19,8 +19,6 @@ QMAKE_CXXFLAGS_DEBUG -= -O2
 QMAKE_CXXFLAGS_DEBUG -= -O3
 QMAKE_CXXFLAGS_DEBUG *= -Og
 
-DEFINES += GIT_REVNO="\\\"$(shell git -C \""$$_PRO_FILE_PWD_"\" describe --tags --always)\\\""
-
 SOURCES += main.cpp\
     logger.cpp \
     mainwindow.cpp \

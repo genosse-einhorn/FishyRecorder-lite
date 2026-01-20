@@ -4,6 +4,7 @@
 #include "recording/coordinator.h"
 #include "recording/utilopenfile.h"
 #include "logger.h"
+#include "version.h"
 
 #ifdef HAVE_THIRDPARTY_LICENSES
 #   include "thirdpartylicensedialog.h"
@@ -142,7 +143,7 @@ void MainWindow::showAboutDialog()
         "<p>"
         "A copy of the GNU General Public License can be retrieved from "
         "<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>."
-     ).replace("%%RECORDER_VERSION%%", GIT_REVNO)
+     ).replace("%%RECORDER_VERSION%%", KUEMMELRECORDER_VERSION)
         .replace("%%QT_VERSION%%", qVersion())
         .replace("%%LAME_VERSION%%", get_lame_version())
         .replace("%%FLAC_VERSION%%", FLAC__VERSION_STRING));
