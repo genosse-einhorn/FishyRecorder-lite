@@ -1,6 +1,6 @@
 #include "lameencoderstream.h"
 
-#include <lame/lame.h>
+#include <lame.h>
 
 #include <QDebug>
 #include <memory>

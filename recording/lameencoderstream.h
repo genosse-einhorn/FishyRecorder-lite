@@ -3,7 +3,7 @@
 
 #include "abstractencoderstream.h"
 
-#include <lame/lame.h>
+#include <lame.h>
 
 class QIODevice;
 

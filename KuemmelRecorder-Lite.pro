@@ -11,9 +11,7 @@ CONFIG   += c++14 link_pkgconfig
 TARGET = KuemmelRecorder-Lite
 TEMPLATE = app
 
-LIBS += -lmp3lame
-
-PKGCONFIG += openal flac
+PKGCONFIG += openal flac lame
 
 QMAKE_CXXFLAGS_DEBUG -= -O0
 QMAKE_CXXFLAGS_DEBUG -= -O1
