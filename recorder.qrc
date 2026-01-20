@@ -8,6 +8,6 @@
         <file>img/fishy.svg</file>
     </qresource>
     <qresource prefix="/l10n">
-        <file alias="de.qm">l10n/recorder_de.qm</file>
+        <file alias="recorder_de.qm">l10n/recorder_de.qm</file>
     </qresource>
 </RCC>

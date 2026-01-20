@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     Logger::install();
 
     QTranslator t;
-    t.load(QLocale::system(), ":/l10n/");
+    t.load(QLocale(), QLatin1String("recorder"), QLatin1String("_"), QLatin1String(":/l10n"));
     a.installTranslator(&t);
 
     MainWindow w;
