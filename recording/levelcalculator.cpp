@@ -27,15 +27,4 @@ void LevelCalculator::processAudio(const float *samples, qint64 count)
     }
 }
 
-void LevelCalculator::processAudio(const qint16 *sampleI, qint64 count)
-{
-    float sampleF[count*2];
-
-    for (qint64 i = 0; i < count*2; ++i) {
-        sampleF[i] = float(sampleI[i]) / std::numeric_limits<qint16>::max();
-    }
-
-    processAudio(sampleF, count);
-}
-
 } // namespace Recording

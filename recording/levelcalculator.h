@@ -16,7 +16,6 @@ signals:
 
 public slots:
     void processAudio(const float *samples, qint64 count);
-    void processAudio(const qint16 *samples, qint64 count);
 
 private:
     float m_tempLevelL = 0.0f;
