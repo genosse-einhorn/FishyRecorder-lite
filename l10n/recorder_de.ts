@@ -65,6 +65,11 @@
         <translation>Protokolldateien</translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="202"/>
+        <source>Restart with OpenAL logging</source>
+        <translation>Mit OpenAL-Protokollierung neustarten</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="94"/>
         <source>3rd-Party Licenses</source>
         <translation>Lizenzen von Drittanbietern</translation>

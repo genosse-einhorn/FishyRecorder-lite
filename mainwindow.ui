@@ -197,6 +197,14 @@
     <string>Log files</string>
    </property>
   </action>
+  <action name="actionRestartWithAudioDebugging">
+   <property name="text">
+    <string>Restart with OpenAL logging</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

@@ -166,6 +166,14 @@ QString currentLogFile()
     return impl->m_logfile.fileName();
 }
 
+QString alsoftLogFile()
+{
+    return QString("%1/%2.%3.openal-soft.log").arg(logfileDir(),
+                                                   QApplication::applicationName(),
+                                                   QDateTime::currentDateTime().toString("yyyyMMdd.HHmmss"));
+
+}
+
 
 
 } // namespace Logger

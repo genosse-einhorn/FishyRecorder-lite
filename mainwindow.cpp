@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAboutDialog);
     QObject::connect(ui->actionAudioDebugInfo, &QAction::triggered, this, &MainWindow::showAlDebugDialog);
+    QObject::connect(ui->actionRestartWithAudioDebugging, &QAction::triggered, this, &::MainWindow::restartWithAlLogging);
     QObject::connect(ui->actionLogFiles, &QAction::triggered, this, &MainWindow::showLogFiles);
 
     // Move buttons into a toolbar and create "Help" menu
@@ -82,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tb->addWidget(spacer);
     QMenu *helpMenu = new QMenu(this);
     helpMenu->addAction(ui->actionAudioDebugInfo);
+    helpMenu->addAction(ui->actionRestartWithAudioDebugging);
     helpMenu->addAction(ui->actionLogFiles);
     helpMenu->addSeparator();
 
@@ -159,4 +161,18 @@ void MainWindow::showAlDebugDialog()
 void MainWindow::showLogFiles()
 {
     Recording::Util::showFileInExplorer(Logger::currentLogFile());
+}
+
+void MainWindow::restartWithAlLogging()
+{
+    QProcess p;
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+    env.insert(QLatin1String("ALSOFT_LOGLEVEL"), QLatin1String("3"));
+    env.insert(QLatin1String("ALSOFT_LOGFILE"), Logger::alsoftLogFile());
+    p.setProcessEnvironment(env);
+    p.setProgram(QCoreApplication::applicationFilePath());
+    p.startDetached();
+
+    close();
 }
