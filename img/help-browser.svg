@@ -38,29 +38,6 @@
          id="stop2435" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
-       id="linearGradient21644">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop21646" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop21648" />
-    </linearGradient>
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient21644"
-       id="radialGradient21650"
-       cx="25.125"
-       cy="36.75"
-       fx="25.125"
-       fy="36.75"
-       r="15.75"
-       gradientTransform="matrix(1.000000,0.000000,0.000000,0.595238,3.369686e-16,14.87500)"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
        id="linearGradient2933">
       <stop
          id="stop2935"
@@ -181,16 +158,6 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <path
-       sodipodi:type="arc"
-       style="opacity:0.63068181;color:#000000;fill:url(#radialGradient21650);fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:1.0000000;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000;visibility:visible;display:inline;overflow:visible"
-       id="path21642"
-       sodipodi:cx="25.125000"
-       sodipodi:cy="36.750000"
-       sodipodi:rx="15.750000"
-       sodipodi:ry="9.3750000"
-       d="M 40.875000 36.750000 A 15.750000 9.3750000 0 1 1  9.3750000,36.750000 A 15.750000 9.3750000 0 1 1  40.875000 36.750000 z"
-       transform="matrix(1.173803,0.000000,0.000000,0.600000,-5.004403,20.32500)" />
     <path
        sodipodi:type="arc"
        style="fill:url(#radialGradient2207);fill-opacity:1.0000000;stroke:#204a87"
