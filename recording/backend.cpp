@@ -151,7 +151,7 @@ void Backend::openRecordDevice(const QString &device)
     m_recordDevice = alcCaptureOpenDevice(device.size() > 0 ? device.toUtf8().data() : nullptr,
                                           SAMPLE_RATE,
                                           AL_FORMAT_STEREO_FLOAT32,
-                                          SAMPLE_RATE*sizeof(float));
+                                          SAMPLE_RATE/2);
     if (!m_recordDevice)
     {
         emit error(QString("alcCaptureOpenDevice: %1").arg(getAlcErrorStr(nullptr)));
