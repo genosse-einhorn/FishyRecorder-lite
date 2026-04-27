@@ -11,6 +11,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("Genosse Einhorn");
     QCoreApplication::setApplicationName("KuemmelRecorder");
 
+    // XDG platforms have icon themes which fall back to "hicolor" for missing icons
+    // On other platforms (mainly Windows for us), Qt refuses to do this by itself
+    // so we set the hicolor theme manually to make Qt load our icons from resources
+    if (QIcon::themeName().isEmpty())
+        QIcon::setThemeName(QStringLiteral("hicolor"));
+
     Logger::install();
 
     QTranslator t;

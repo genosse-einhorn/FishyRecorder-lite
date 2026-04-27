@@ -14,8 +14,7 @@
    <string notr="true">&lt;&gt;&lt; Recorder (Lite)</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="recorder.qrc">
-    <normaloff>:/img/img/fishy.svg</normaloff>:/img/img/fishy.svg</iconset>
+   <iconset theme="fishy-recorder"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="autoFillBackground">
@@ -77,8 +76,7 @@
          <string>&amp;Track [T]</string>
         </property>
         <property name="icon">
-         <iconset theme="media-playback-pause" resource="recorder.qrc">
-          <normaloff>:/img/img/media-playback-pause.svg</normaloff>:/img/img/media-playback-pause.svg</iconset>
+         <iconset theme="media-playback-pause"/>
         </property>
         <property name="shortcut">
          <string>T</string>
@@ -97,8 +95,7 @@
          <string>&amp;Stop [S]</string>
         </property>
         <property name="icon">
-         <iconset theme="media-playback-stop" resource="recorder.qrc">
-          <normaloff>:/img/img/media-playback-stop.svg</normaloff>:/img/img/media-playback-stop.svg</iconset>
+         <iconset theme="media-playback-stop"/>
         </property>
         <property name="shortcut">
          <string>S</string>
@@ -120,8 +117,7 @@
          <string>&amp;Monitor [M]</string>
         </property>
         <property name="icon">
-         <iconset theme="audio-headphones" resource="recorder.qrc">
-          <normaloff>:/img/img/audio-headphones.svg</normaloff>:/img/img/audio-headphones.svg</iconset>
+         <iconset theme="audio-headphones"/>
         </property>
         <property name="shortcut">
          <string>M</string>
@@ -146,8 +142,7 @@
          <string>&amp;Record [R]</string>
         </property>
         <property name="icon">
-         <iconset theme="media-record" resource="recorder.qrc">
-          <normaloff>:/img/img/media-record.svg</normaloff>:/img/img/media-record.svg</iconset>
+         <iconset theme="media-record"/>
         </property>
         <property name="shortcut">
          <string>R</string>
@@ -163,8 +158,7 @@
          <string>Help ▼</string>
         </property>
         <property name="icon">
-         <iconset theme="help-browser" resource="recorder.qrc">
-          <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
+         <iconset theme="help-browser"/>
         </property>
         <property name="popupMode">
          <enum>QToolButton::InstantPopup</enum>
@@ -180,8 +174,7 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="help-about" resource="recorder.qrc">
-     <normaloff>:/img/img/help-browser.svg</normaloff>:/img/img/help-browser.svg</iconset>
+    <iconset theme="help-about"/>
    </property>
    <property name="text">
     <string>About</string>
@@ -233,8 +226,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="recorder.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -61,7 +61,7 @@ RESOURCES += \
 TRANSLATIONS += l10n/recorder_de.ts
 
 win32 {
-    RC_ICONS = img/fishy.ico
+    RC_ICONS = icons/fishy.ico
 }
 
 packagesExist(mxe-licenses-html) {

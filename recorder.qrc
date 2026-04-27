@@ -1,11 +1,35 @@
 <RCC>
-    <qresource prefix="/img">
-        <file>img/audio-headphones.svg</file>
-        <file>img/media-playback-pause.svg</file>
-        <file>img/media-playback-stop.svg</file>
-        <file>img/media-record.svg</file>
-        <file>img/help-browser.svg</file>
-        <file>img/fishy.svg</file>
+    <qresource prefix="/">
+        <file>icons/hicolor/16x16/actions/help-about.png</file>
+        <file>icons/hicolor/16x16/actions/media-playback-pause.png</file>
+        <file>icons/hicolor/16x16/actions/media-playback-stop.png</file>
+        <file>icons/hicolor/16x16/actions/media-record.png</file>
+        <file>icons/hicolor/16x16/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/16x16/apps/help-browser.png</file>
+        <file>icons/hicolor/16x16/devices/audio-headphones.png</file>
+        <file>icons/hicolor/22x22/actions/help-about.png</file>
+        <file>icons/hicolor/22x22/actions/media-playback-pause.png</file>
+        <file>icons/hicolor/22x22/actions/media-playback-stop.png</file>
+        <file>icons/hicolor/22x22/actions/media-record.png</file>
+        <file>icons/hicolor/22x22/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/22x22/apps/help-browser.png</file>
+        <file>icons/hicolor/22x22/devices/audio-headphones.png</file>
+        <file>icons/hicolor/32x32/actions/help-about.png</file>
+        <file>icons/hicolor/32x32/actions/media-playback-pause.png</file>
+        <file>icons/hicolor/32x32/actions/media-playback-stop.png</file>
+        <file>icons/hicolor/32x32/actions/media-record.png</file>
+        <file>icons/hicolor/32x32/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/32x32/apps/help-browser.png</file>
+        <file>icons/hicolor/32x32/devices/audio-headphones.png</file>
+        <file>icons/hicolor/48x48/actions/help-about.png</file>
+        <file>icons/hicolor/48x48/actions/media-playback-pause.png</file>
+        <file>icons/hicolor/48x48/actions/media-playback-stop.png</file>
+        <file>icons/hicolor/48x48/actions/media-record.png</file>
+        <file>icons/hicolor/48x48/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/48x48/apps/help-browser.png</file>
+        <file>icons/hicolor/48x48/devices/audio-headphones.png</file>
+        <file>icons/hicolor/64x64/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/index.theme</file>
     </qresource>
     <qresource prefix="/l10n">
         <file alias="recorder_de.qm">l10n/recorder_de.qm</file>

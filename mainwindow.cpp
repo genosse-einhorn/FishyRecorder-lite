@@ -132,6 +132,7 @@ void MainWindow::showAboutDialog()
         "<a href=\"http://lame.sourceforge.net/\">LAME</a> %%LAME_VERSION%%<br>"
         "<a href=\"https://xiph.org/flac/\">FLAC</a> %%FLAC_VERSION%%<br>"
         "<a href=\"https://www.openal.org/\">OpenAL</a> (<a href=\"http://kcat.strangesoft.net/openal.html\">OpenAL Soft</a>)<br>"
+        "<a href=\"https://invent.kde.org/frameworks/oxygen-icons\">Oxygen Icon Theme</a>"
         "<p>"
         "This program is free software: you can redistribute it and/or modify "
         "it under the terms of the GNU General Public License as published by "
