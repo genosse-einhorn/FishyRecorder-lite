@@ -83,3 +83,9 @@ UCRT runtime:
     api-ms-win-core-debug-l1-1-0.dll
     api-ms-win-core-datetime-l1-1-0.dll
     api-ms-win-core-console-l1-1-0.dll
+
+
+Misc files:
+
+    LICENSE
+    alsoft.ini
