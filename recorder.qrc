@@ -29,6 +29,7 @@
         <file>icons/hicolor/48x48/apps/help-browser.png</file>
         <file>icons/hicolor/48x48/devices/audio-headphones.png</file>
         <file>icons/hicolor/64x64/apps/fishy-recorder.png</file>
+        <file>icons/hicolor/scalable/apps/fishy-recorder.svg</file>
         <file>icons/hicolor/index.theme</file>
     </qresource>
     <qresource prefix="/l10n">

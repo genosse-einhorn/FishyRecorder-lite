@@ -2,7 +2,7 @@
 Name=Oxygen
 Comment=Oxygen Team
 DisplayDepth=32
-Directories=16x16/actions,16x16/apps,16x16/devices,22x22/actions,22x22/apps,22x22/devices,32x32/actions,32x32/apps,32x32/devices,48x48/actions,48x48/apps,48x48/devices,64x64/apps
+Directories=16x16/actions,16x16/apps,16x16/devices,22x22/actions,22x22/apps,22x22/devices,32x32/actions,32x32/apps,32x32/devices,48x48/actions,48x48/apps,48x48/devices,64x64/apps,scalable/apps
 
 
 [16x16/actions]
@@ -69,3 +69,10 @@ Type=Threshold
 Size=64
 Context=Applications
 Type=Threshold
+
+[scalable/apps]
+MinSize=1
+Size=128
+MaxSize=256
+Context=Applications
+Type=Scalable
